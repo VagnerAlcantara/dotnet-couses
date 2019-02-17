@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10 - Domain", "10 - Domain", "{0645ACD7-CAAB-4E66-ADDE-436A2BC58ED7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "20 - Data", "20 - Data", "{CCD92CFB-4752-4BD9-96F6-D1C9ED462E13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "50 - Presentation", "50 - Presentation", "{D328F725-5BDD-4520-A30E-B78088E34790}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursoAspNetMvc5.Domain", "src\CursoAspNetMvc5.Domain\CursoAspNetMvc5.Domain.csproj", "{4090C4F2-202B-41DF-BA3A-227C951F875A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursoAspNetMvc5.Data", "src\CursoAspNetMvc5.Data\CursoAspNetMvc5.Data.csproj", "{969FF3E4-2940-4E07-949F-BB792C85063C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursoAspNetMvc5.MVC", "src\CursoAspNetMvc5.MVC\CursoAspNetMvc5.MVC.csproj", "{41429411-6000-4707-AD5C-18F9E37B89C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4090C4F2-202B-41DF-BA3A-227C951F875A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4090C4F2-202B-41DF-BA3A-227C951F875A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4090C4F2-202B-41DF-BA3A-227C951F875A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4090C4F2-202B-41DF-BA3A-227C951F875A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{969FF3E4-2940-4E07-949F-BB792C85063C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{969FF3E4-2940-4E07-949F-BB792C85063C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{969FF3E4-2940-4E07-949F-BB792C85063C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{969FF3E4-2940-4E07-949F-BB792C85063C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41429411-6000-4707-AD5C-18F9E37B89C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41429411-6000-4707-AD5C-18F9E37B89C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41429411-6000-4707-AD5C-18F9E37B89C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41429411-6000-4707-AD5C-18F9E37B89C5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4090C4F2-202B-41DF-BA3A-227C951F875A} = {0645ACD7-CAAB-4E66-ADDE-436A2BC58ED7}
+		{969FF3E4-2940-4E07-949F-BB792C85063C} = {CCD92CFB-4752-4BD9-96F6-D1C9ED462E13}
+		{41429411-6000-4707-AD5C-18F9E37B89C5} = {D328F725-5BDD-4520-A30E-B78088E34790}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FFDD5D3D-B26F-400D-9820-90235EA9ACB8}
+	EndGlobalSection
+EndGlobal

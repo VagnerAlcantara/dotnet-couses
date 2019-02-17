@@ -1,0 +1,4 @@
+IF(DB_ID(N'Locadora') IS NULL)
+BEGIN
+	CREATE DATABASE Locadora
+END;

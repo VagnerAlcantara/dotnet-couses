@@ -1,0 +1,42 @@
+﻿@model BookStore.ViewModels.EditorBookViewModel
+@{
+    ViewBag.Title = "Criando um novo livro ...";
+    //Layout = "~/Views/Shared/_LayoutNovo.cshtml";
+
+}
+
+@*Função razor customizada
+        @helper MinhaFuncao(string nome)
+        {
+            <text>O nome informado é @nome</text>
+    }*@
+<h2>Novo livro</h2>
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+<div class="alert alert-danger">
+    @Html.ValidationMessage("Mensagem")
+</div>
+@using (@Html.BeginForm())
+{
+
+
+    @Html.Partial("Partials/EditBookPartial", Model)
+
+    @Html.EditorFor(model => model.Age)
+    @Html.ValidationMessageFor(x => x.Age)
+
+    @*Usando o razor customizado
+            <p>
+            @MinhaFuncao("Vagner")
+        </p>*@
+    <button type="submit" class="btn btn-primary">Submit</button>
+}
+
+@section Scripts{
+    @Scripts.Render("~bundles/jqueryval")
+}
+@*@section menu{
+        <div>
+            Olá, você está na pagina de criação
+        </div>
+    }*@

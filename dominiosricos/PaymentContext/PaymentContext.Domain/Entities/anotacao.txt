@@ -1,0 +1,4 @@
+Recomendação de livros:
+- Clean Code - Robert C. Marting (Uncle Bob)
+- Clean Coder - Robert C. Marting (Uncle Bob)
+- Clean Architecture - Robert C. Marting (Uncle Bob)

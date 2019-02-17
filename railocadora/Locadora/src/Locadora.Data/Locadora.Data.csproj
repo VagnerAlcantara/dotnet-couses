@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DDE3D1D3-4A25-45A8-9AA6-36C7C4FA0B72}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Locadora.Data</RootNamespace>
+    <AssemblyName>Locadora.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClienteRepository.cs" />
+    <Compile Include="Connection.cs" />
+    <Compile Include="FilmeRepository.cs" />
+    <Compile Include="LocacaoRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Locadora.Domain\Locadora.Domain.csproj">
+      <Project>{2ce1db4d-3065-4ff3-bbda-d239e007f826}</Project>
+      <Name>Locadora.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="scripts\CriacaoTabelas\000_[CREATE]_[DB_LOCADORA].sql" />
+    <Content Include="scripts\CriacaoTabelas\005_[CREATE]_[PESSOA].sql" />
+    <Content Include="scripts\CriacaoTabelas\010_[CREATE]_[ENDERECO].sql" />
+    <Content Include="scripts\CriacaoTabelas\020_[CREATE]_[CLIENTE].sql" />
+    <Content Include="scripts\CriacaoTabelas\030_[CREATE]_[PERFIL].sql" />
+    <Content Include="scripts\CriacaoTabelas\040_[CREATE]_[USUARIO].sql" />
+    <Content Include="scripts\CriacaoTabelas\050_[CREATE]_[PERMISSAO].sql" />
+    <Content Include="scripts\CriacaoTabelas\060_[CREATE]_[FILME].sql" />
+    <Content Include="scripts\CriacaoTabelas\070_[CREATE]_[LOCACAO].sql" />
+    <Content Include="scripts\Procedures\SCRIPT_SUGESTAO_MODELO_SCRIPT_SQL.sql" />
+    <Content Include="scripts\Procedures\[000]_[INSERT]_[PESSOA].sql" />
+    <Content Include="scripts\Procedures\[010]_[UPDATE]_[PESSOA].sql" />
+    <Content Include="scripts\Procedures\[020]_[DELETE]_[PESSOA].sql" />
+    <Content Include="scripts\Procedures\[030]_[INSERT]_[CLIENTE].sql" />
+    <Content Include="scripts\Procedures\[035]_[UPDATE]_[CLIENTE].sql" />
+    <Content Include="scripts\Procedures\[040]_[DELETE]_[CLIENTE].sql" />
+    <Content Include="scripts\Procedures\[050]_[SELECT_BYID]_[CLIENTE].sql" />
+    <Content Include="scripts\Procedures\[052]_[SELECT_BY_CPF]_[CLIENTE].sql" />
+    <Content Include="scripts\Procedures\[060]_[INSERT]_[FILME].sql" />
+    <Content Include="scripts\Procedures\[070]_[UPDATE]_[FILME].sql" />
+    <Content Include="scripts\Procedures\[080]_[DELETE]_[FILME].sql" />
+    <Content Include="scripts\Procedures\[090]_[SELECT_POR_ID]_[FILME].sql" />
+    <Content Include="scripts\Procedures\[100]_[INSERT]_[LOCACAO].sql" />
+    <Content Include="scripts\Procedures\[110]_[UPDATE]_[LOCACAO].sql" />
+    <Content Include="scripts\Procedures\[120]_[DELETE]_[LOCACAO].sql" />
+    <Content Include="scripts\Procedures\[130]_[SELECT_POR_ID_CLIENTE]_[LOCACAO].sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

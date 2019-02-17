@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>
+      You Learn
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-searchbar placeholder="Digite a aula desejada" [showCancelButton]="true" #tag (keyup.enter)="buscarVideo(tag.value)"></ion-searchbar>
+  <ion-card>
+    <ion-card-header>
+      Título
+    </ion-card-header>
+    <ion-card-content>
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry
+      <img src="https://i.ytimg.com/vi/F_gAtlmSBPU/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDjeTzMb3CnYZchOkQSpnBESKYRwg"
+        alt="Youtube">
+      <ion-row>
+        <ion-col>
+          <button ion-button icon-left clear small>
+            <ion-icon name="md-albums"></ion-icon>
+            <div>Ver PlayList</div>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-left clear small>
+            <ion-icon name="text"></ion-icon>
+            <div>Compartilhar</div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="showNovoVideo()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>

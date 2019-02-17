@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5F0DAC43-DCBF-4000-BD46-F288CB769029}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TWApp.Dominio</RootNamespace>
+    <AssemblyName>TWApp.Dominio</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Comandos\Entrada\ComandoIncluirAtleta.cs" />
+    <Compile Include="Comandos\Manipuladores\ComandoManipulacaoAtleta.cs" />
+    <Compile Include="Comandos\Saida\ComandoResultadoInclusaoAtleta.cs" />
+    <Compile Include="Entidades\Atleta.cs" />
+    <Compile Include="Entidades\Contato.cs" />
+    <Compile Include="Entidades\Endereco.cs" />
+    <Compile Include="Entidades\Exercicio.cs" />
+    <Compile Include="Entidades\Treino.cs" />
+    <Compile Include="Entidades\Usuario.cs" />
+    <Compile Include="Interfaces\Repositorio\IRepositorioAtleta.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ObjetosDeValor\Cep.cs" />
+    <Compile Include="ObjetosDeValor\Cpf.cs" />
+    <Compile Include="ObjetosDeValor\Email.cs" />
+    <Compile Include="ObjetosDeValor\Nome.cs" />
+    <Compile Include="ObjetosDeValor\Rg.cs" />
+    <Compile Include="ObjetosDeValor\Senha.cs" />
+    <Compile Include="ObjetosDeValor\Telefone.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TWApp.Compartilhado\TWApp.Compartilhado.csproj">
+      <Project>{6ff8ab79-3172-4ccd-bb95-f06f411b69c7}</Project>
+      <Name>TWApp.Compartilhado</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

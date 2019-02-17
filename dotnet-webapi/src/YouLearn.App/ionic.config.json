@@ -1,0 +1,7 @@
+{
+  "name": "YouLearn.App",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
