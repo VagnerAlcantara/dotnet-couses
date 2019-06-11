@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Db\DbContext.cs" />
     <Compile Include="NotaFiscalItemRepository.cs" />
     <Compile Include="NotaFiscalRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

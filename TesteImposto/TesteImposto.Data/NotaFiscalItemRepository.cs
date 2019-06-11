@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Locadora.Data;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using TesteImposto.Domain;
@@ -10,21 +9,13 @@ namespace TesteImposto.Data
 {
     internal class NotaFiscalItemRepository : INotaFiscalItemRepository
     {
-        private static readonly string _connectioString = ConfigurationManager.ConnectionStrings["connTeste"].ConnectionString;
+        private DbContext _dbContext;
 
         public void Add(NotaFiscalItem entity)
         {
-            try
+            using (_dbContext = new DbContext())
             {
-                SqlTransaction trans;
-
-                using (var conn = new SqlConnection(_connectioString))
-                {
-                    trans = conn.BeginTransaction();
-
-                    using (SqlCommand sqlCommand = new SqlCommand("P_NOTA_FISCAL_ITEM", conn, trans))
-                    {
-                        List<SqlParameter> parameterList = new List<SqlParameter>()
+                List<SqlParameter> parameterList = new List<SqlParameter>()
                     {
                         new SqlParameter() { ParameterName = "@pId",  Direction = ParameterDirection.Output, SqlDbType = SqlDbType.Int },
                         new SqlParameter() { ParameterName = "@pIdNotaFiscal", Value = entity.IdNotaFiscal, SqlDbType = SqlDbType.Int },
@@ -37,20 +28,12 @@ namespace TesteImposto.Data
                         new SqlParameter() { ParameterName = "@pCodigoProduto", Value = entity.CodigoProduto, SqlDbType = SqlDbType.VarChar, Size = 50}
                     };
 
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-                        sqlCommand.Parameters.AddRange(parameterList.ToArray());
-                        sqlCommand.ExecuteNonQuery();
-
-                        NotaFiscalItemRepository notaFiscalItemRepository = new NotaFiscalItemRepository();
-
-                        notaFiscalItemRepository.Add(entity);
-
-                    }
+                using (SqlCommand sqlCommand = new SqlCommand("P_NOTA_FISCAL_ITEM", _dbContext.SqlConnection))
+                {
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddRange(parameterList.ToArray());
+                    var result = sqlCommand.ExecuteNonQuery();
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
             }
         }
 
@@ -58,7 +41,7 @@ namespace TesteImposto.Data
         {
             foreach (var entity in entities)
             {
-                entity.SetIdNotaFiscal(idNotaFiscal);
+                entity.IdNotaFiscal = idNotaFiscal;
                 Add(entity);
             }
         }

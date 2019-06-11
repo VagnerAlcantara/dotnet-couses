@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Locadora.Data;
+using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using TesteImposto.Domain;
@@ -10,68 +10,48 @@ namespace TesteImposto.Data
 {
     public class NotaFiscalRepository : INotaFiscalRepository
     {
-        private static readonly string _connectioString = ConfigurationManager.ConnectionStrings["connTeste"].ConnectionString;
+        private DbContext _dbContext;
 
         public void GerarNotaFiscal(NotaFiscal entity)
         {
-            if (!entity.IsValid)
-                return;
-
-            SqlTransaction trans = null;
-
-            try
+            using (_dbContext = new DbContext())
             {
-                using (var conn = new SqlConnection(_connectioString))
+                List<SqlParameter> parameterList = new List<SqlParameter>()
+                    {
+                    new SqlParameter() { ParameterName = "@pId", Value = entity.Id, Direction = ParameterDirection.Output, SqlDbType = SqlDbType.Int },
+                    new SqlParameter() { ParameterName = "@pNumeroNotaFiscal", Value = entity.NumeroNotaFiscal, SqlDbType = SqlDbType.Int },
+                    new SqlParameter() { ParameterName = "@pSerie", Value = entity.Serie, SqlDbType = SqlDbType.Int },
+                    new SqlParameter() { ParameterName = "@pNomeCliente", Value = entity.NomeCliente, SqlDbType = SqlDbType.VarChar, Size = 50 },
+                    new SqlParameter() { ParameterName = "@pEstadoDestino", Value = entity.EstadoDestino, SqlDbType = SqlDbType.VarChar, Size = 50 },
+                    new SqlParameter() { ParameterName = "@pEstadoOrigem", Value = entity.EstadoOrigem, SqlDbType = SqlDbType.VarChar, Size = 50 }
+                };
+
+                using (SqlCommand sqlCommand = new SqlCommand("P_NOTA_FISCAL", _dbContext.SqlConnection, _dbContext.SqlTransaction))
                 {
-                    conn.Open();
-                    trans = conn.BeginTransaction();
-
-                    using (SqlCommand sqlCommand = new SqlCommand("P_NOTA_FISCAL", conn, trans))
+                    try
                     {
-
-                        List<SqlParameter> parameterList = new List<SqlParameter>()
-                    {
-                        new SqlParameter() { ParameterName = "@pId",  Direction = ParameterDirection.Output, SqlDbType = SqlDbType.Int },
-                        new SqlParameter() { ParameterName = "@pNumeroNotaFiscal", Value = entity.NumeroNotaFiscal, SqlDbType = SqlDbType.Int },
-                        new SqlParameter() { ParameterName = "@pSerie",Value = entity.Serie, SqlDbType = SqlDbType.Int},
-                        new SqlParameter() { ParameterName = "@pNomeCliente", Value = entity.NomeCliente, SqlDbType =  SqlDbType.VarChar, Size = 50},
-                        new SqlParameter() { ParameterName = "@pEstadoDestino", Value = entity.EstadoDestino, SqlDbType = SqlDbType.VarChar, Size = 50},
-                        new SqlParameter() { ParameterName = "@pEstadoOrigem", Value = entity.EstadoOrigem, SqlDbType = SqlDbType.VarChar, Size = 50}
-                    };
-
                         sqlCommand.CommandType = CommandType.StoredProcedure;
-
                         sqlCommand.Parameters.AddRange(parameterList.ToArray());
+                        var result = sqlCommand.ExecuteReader();
 
-                        try
-                        {
-                            entity.SetId(sqlCommand.ExecuteNonQuery());
-                        }
-                        catch (Exception)
-                        {
-                            trans.Rollback();
-                        }
+                        if (result != null)
+                            entity.Id = Convert.ToInt32(result);
 
                         NotaFiscalItemRepository notaFiscalItemRepository = new NotaFiscalItemRepository();
-
-                        try
-                        {
-                            notaFiscalItemRepository.Add(entity.ItensDaNotaFiscal, entity.Id);
-                            trans.Commit();
-                        }
-                        catch (Exception)
-                        {
-                            trans.Rollback();
-                        }
-
+                        notaFiscalItemRepository.Add(entity.ItensDaNotaFiscal, entity.Id);
+                        _dbContext.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        _dbContext.Dispose();
+                        _dbContext.Rollback();
+                    }
+                    finally
+                    {
+                        _dbContext.Dispose();
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
         }
-
     }
 }

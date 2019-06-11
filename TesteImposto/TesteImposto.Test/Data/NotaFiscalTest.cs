@@ -17,15 +17,21 @@ namespace TesteImposto.Test.Data
             pedido.AddItem(new PedidoItem("Produto A", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), true));
             pedido.AddItem(new PedidoItem("Produto B", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), false));
             pedido.AddItem(new PedidoItem("Produto C", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), false));
-            NotaFiscal notaFiscal = new NotaFiscal(pedido.NomeCliente, pedido.EstadoDestino, pedido.EstadoOrigem);
 
-            notaFiscal.EmitirNotaFiscal(pedido);
-            //act
-            if (notaFiscal.IsValid)
+            if (pedido.IsValid)
             {
-                NotaFiscalRepository notaFiscalRepository = new NotaFiscalRepository();
-                notaFiscalRepository.GerarNotaFiscal(notaFiscal);
+                NotaFiscal notaFiscal = new NotaFiscal(pedido.NomeCliente, pedido.EstadoDestino, pedido.EstadoOrigem);
+
+                notaFiscal.EmitirNotaFiscal(pedido);
+
+                if (notaFiscal.IsValid)
+                {
+                    //act
+                    NotaFiscalRepository notaFiscalRepository = new NotaFiscalRepository();
+                    notaFiscalRepository.GerarNotaFiscal(notaFiscal);
+                }
             }
+
             //assert
             //Assert.IsTrue(notaFiscalService.IsValid);
         }

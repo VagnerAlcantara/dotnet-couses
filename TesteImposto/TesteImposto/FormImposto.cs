@@ -34,7 +34,6 @@ namespace TesteImposto
             try
             {
                 CriarItemsPedido();
-                return;
             }
             catch (Exception ex)
             {
@@ -49,7 +48,9 @@ namespace TesteImposto
                     MessageBox.Show("Erro ao gerar nota fiscal");
                     return;
                 }
+
                 NotaFiscalService notaFiscalService = new NotaFiscalService();
+
                 notaFiscalService.GerarNotaFiscal(_pedido);
 
                 if (notaFiscalService.IsValid)

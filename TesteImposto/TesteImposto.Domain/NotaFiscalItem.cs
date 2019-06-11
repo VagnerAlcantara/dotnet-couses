@@ -3,28 +3,29 @@ using TesteImposto.Shared;
 
 namespace TesteImposto.Domain
 {
+    [Serializable]
     public class NotaFiscalItem : Notification
     {
-        public int Id { get; private set; }
-        public int IdNotaFiscal { get; private set; }
-        public string Cfop { get; private set; }
-        public string TipoIcms { get; private set; }
-        public double BaseIcms { get; private set; }
-        public double AliquotaIcms { get; private set; }
-        public double ValorIcms { get; private set; }
-        public string NomeProduto { get; private set; }
-        public string CodigoProduto { get; private set; }
+        public int Id { get;  set; }
+        public int IdNotaFiscal { get;  set; }
+        public string Cfop { get;  set; }
+        public string TipoIcms { get;  set; }
+        public double BaseIcms { get;  set; }
+        public double AliquotaIcms { get;  set; }
+        public double ValorIcms { get;  set; }
+        public string NomeProduto { get;  set; }
+        public string CodigoProduto { get;  set; }
 
+        private NotaFiscalItem()
+        {
+
+        }
         public NotaFiscalItem(int idNotaFiscal, string cfop, string tipoIcms, double? baseIcms, double? aliquotaIcms, double? valorIcms, string nomeProduto, string codigoProduto)
         {
             ValidateNotaFiscalItem(idNotaFiscal, cfop, tipoIcms, baseIcms, aliquotaIcms, valorIcms, nomeProduto, codigoProduto);
 
             if (IsValid)
                 CreateNotalFiscalItem(idNotaFiscal, cfop, tipoIcms, baseIcms.Value, aliquotaIcms.Value, valorIcms.Value, nomeProduto, codigoProduto);
-        }
-        public void SetIdNotaFiscal(int id)
-        {
-            IdNotaFiscal = id;
         }
 
         /// <summary>
@@ -40,9 +41,6 @@ namespace TesteImposto.Domain
         /// <param name="codigoProduto">Código do produto</param>
         private void ValidateNotaFiscalItem(int idNotaFiscal, string cfop, string tipoIcms, double? baseIcms, double? aliquotaIcms, double? valorIcms, string nomeProduto, string codigoProduto)
         {
-            if (idNotaFiscal == 0)
-                AddError("Nota Fiscal inválida");
-
             if (string.IsNullOrEmpty(cfop))
                 AddError("CFOP inválido");
 
@@ -78,7 +76,7 @@ namespace TesteImposto.Domain
         /// <param name="codigoProduto">Código do produto</param>
         private void CreateNotalFiscalItem(int idNotaFiscal, string cfop, string tipoIcms, double baseIcms, double aliquotaIcms, double valorIcms, string nomeProduto, string codigoProduto)
         {
-            Id = new Random().Next(Int32.MaxValue); ;
+            Id = new Random().Next(int.MinValue, int.MaxValue); ;
             IdNotaFiscal = idNotaFiscal;
             Cfop = cfop;
             TipoIcms = tipoIcms;

@@ -4,15 +4,16 @@ using TesteImposto.Shared;
 
 namespace TesteImposto.Domain
 {
+    [Serializable]
     public class NotaFiscal : Notification
     {
-        public int Id { get; private set; }
-        public int NumeroNotaFiscal { get; private set; }
-        public int Serie { get; private set; }
-        public string NomeCliente { get; private set; }
-        public string EstadoDestino { get; private set; }
-        public string EstadoOrigem { get; private set; }
-        public IList<NotaFiscalItem> ItensDaNotaFiscal { get; private set; }
+        public int Id { get;  set; }
+        public int NumeroNotaFiscal { get;  set; }
+        public int Serie { get;  set; }
+        public string NomeCliente { get;  set; }
+        public string EstadoDestino { get;  set; }
+        public string EstadoOrigem { get;  set; }
+        public List<NotaFiscalItem> ItensDaNotaFiscal { get;  set; }
 
         private NotaFiscal()
         {
@@ -27,22 +28,20 @@ namespace TesteImposto.Domain
                 CreateNotaFiscal(nomeCliente, estadoDestino, estadoOrigem);
         }
 
-        public void EmitirNotaFiscal(Pedido pedido)
+        public NotaFiscal EmitirNotaFiscal(Pedido pedido)
         {
             if (pedido.IsValid && IsValid)
                 AddItem(pedido);
-        }
 
-        public void SetId(int id)
-        {
-            Id = id;
+            return this;
+
         }
 
         private void CreateNotaFiscal(string nomeCliente, string estadoDestino, string estadoOrigem)
         {
-            Id = new Random().Next(Int32.MaxValue);
-            NumeroNotaFiscal = new Random().Next(Int32.MaxValue);
-            Serie = new Random().Next(Int32.MaxValue);
+            Id = 0;
+            NumeroNotaFiscal = new Random().Next(0, int.MaxValue);
+            Serie = new Random().Next(0, int.MaxValue); ;
             NomeCliente = nomeCliente;
             EstadoDestino = estadoOrigem;
             EstadoOrigem = estadoDestino;
