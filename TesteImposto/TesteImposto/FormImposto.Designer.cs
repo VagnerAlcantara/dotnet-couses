@@ -114,7 +114,7 @@
             this.buttonGerarNotaFiscal.TabIndex = 8;
             this.buttonGerarNotaFiscal.Text = "Gerar Nota Fiscal";
             this.buttonGerarNotaFiscal.UseVisualStyleBackColor = true;
-            this.buttonGerarNotaFiscal.Click += new System.EventHandler(this.buttonGerarNotaFiscal_Click);
+            this.buttonGerarNotaFiscal.Click += new System.EventHandler(this.ButtonGerarNotaFiscal_Click);
             // 
             // FormImposto
             // 

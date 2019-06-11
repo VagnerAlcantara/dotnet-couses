@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace TesteImposto.Domain
+namespace TesteImposto.Service
 {
-    public abstract class BaseDomain
+    public abstract class BaseService
     {
-        public BaseDomain()
+        public BaseService()
         {
             Errors = new List<string>();
         }
-        
+
         public bool IsValid { get { return !Errors.Any(); } }
 
         public List<string> Errors { get; private set; }

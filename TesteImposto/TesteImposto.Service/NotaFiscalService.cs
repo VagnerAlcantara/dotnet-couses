@@ -1,18 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TesteImposto.Domain;
+﻿using TesteImposto.Domain;
 
 namespace TesteImposto.Service
 {
-    public class NotaFiscalService
+    public class NotaFiscalService : BaseService
     {
-        public void GerarNotaFiscal(Domain.Pedido pedido)
+        public void GerarNotaFiscal(Pedido pedido)
         {
-            NotaFiscal notaFiscal = new NotaFiscal();
-            notaFiscal.EmitirNotaFiscal(pedido);
+            if (!pedido.IsValid)
+                AddError(pedido.Errors);
+
+            NotaFiscal notaFiscal = new NotaFiscal(pedido.NomeCliente, pedido.EstadoDestino, pedido.EstadoOrigem);
+
+            if (!notaFiscal.IsValid)
+                AddError(notaFiscal.Errors);
+
+            if(IsValid)
+                notaFiscal.EmitirNotaFiscal(pedido);
         }
     }
 }
