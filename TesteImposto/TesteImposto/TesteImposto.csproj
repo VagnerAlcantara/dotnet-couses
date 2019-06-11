@@ -86,6 +86,10 @@
       <Project>{7e1fc764-9507-454b-a27d-2397997c1a24}</Project>
       <Name>TesteImposto.Service</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TesteImposto.Shared\TesteImposto.Shared.csproj">
+      <Project>{b444377e-1ddf-4bc9-a8e4-3f87fd7ffdb9}</Project>
+      <Name>TesteImposto.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

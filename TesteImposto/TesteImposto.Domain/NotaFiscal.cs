@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using TesteImposto.Shared;
 
 namespace TesteImposto.Domain
 {
-    public class NotaFiscal : BaseDomain
+    public class NotaFiscal : Notification
     {
         public int Id { get; private set; }
         public int NumeroNotaFiscal { get; private set; }
@@ -30,6 +31,11 @@ namespace TesteImposto.Domain
         {
             if (pedido.IsValid && IsValid)
                 AddItem(pedido);
+        }
+
+        public void SetId(int id)
+        {
+            Id = id;
         }
 
         private void CreateNotaFiscal(string nomeCliente, string estadoDestino, string estadoOrigem)
@@ -74,6 +80,8 @@ namespace TesteImposto.Domain
 
                 if (notaFiscalItem.IsValid)
                     ItensDaNotaFiscal.Add(notaFiscalItem);
+                else
+                    AddError(notaFiscalItem.Errors);
 
             }
         }

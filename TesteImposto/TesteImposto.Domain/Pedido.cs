@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using TesteImposto.Shared;
 
 namespace TesteImposto.Domain
 {
     /// <summary>
     /// Pedido de compra
     /// </summary>
-    public class Pedido : BaseDomain
+    public class Pedido : Notification
     {
         public string EstadoDestino { get; private set; }
         public string EstadoOrigem { get; private set; }
@@ -14,7 +15,7 @@ namespace TesteImposto.Domain
 
         private Pedido() => ItensDoPedido = new List<PedidoItem>();
 
-        public Pedido(string estadoDestino, string estadoOrigem, string nomeCliente) : this()
+        public Pedido(string estadoOrigem, string estadoDestino, string nomeCliente) : this()
         {
             ValidatePedido(estadoDestino, estadoOrigem, nomeCliente);
 

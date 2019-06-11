@@ -1,8 +1,9 @@
 ﻿using System;
+using TesteImposto.Shared;
 
 namespace TesteImposto.Domain
 {
-    public class NotaFiscalItem : BaseDomain
+    public class NotaFiscalItem : Notification
     {
         public int Id { get; private set; }
         public int IdNotaFiscal { get; private set; }
@@ -21,7 +22,11 @@ namespace TesteImposto.Domain
             if (IsValid)
                 CreateNotalFiscalItem(idNotaFiscal, cfop, tipoIcms, baseIcms.Value, aliquotaIcms.Value, valorIcms.Value, nomeProduto, codigoProduto);
         }
-        
+        public void SetIdNotaFiscal(int id)
+        {
+            IdNotaFiscal = id;
+        }
+
         /// <summary>
         /// Valida o item da nota fiscal
         /// </summary>

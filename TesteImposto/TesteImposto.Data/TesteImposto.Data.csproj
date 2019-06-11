@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,8 +42,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NotaFiscalItemRepository.cs" />
     <Compile Include="NotaFiscalRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TesteImposto.Domain\TesteImposto.Domain.csproj">
+      <Project>{4E72E6AD-D24C-4600-A39A-60A900663E5B}</Project>
+      <Name>TesteImposto.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TesteImposto.Shared\TesteImposto.Shared.csproj">
+      <Project>{b444377e-1ddf-4bc9-a8e4-3f87fd7ffdb9}</Project>
+      <Name>TesteImposto.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

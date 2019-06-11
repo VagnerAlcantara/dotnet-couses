@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\NotaFiscalTest.cs" />
     <Compile Include="Domain\NotaFiscalItemTest.cs" />
     <Compile Include="Domain\PedidoItemTest.cs" />
     <Compile Include="Domain\NotaFiscalTest.cs" />
@@ -57,9 +58,14 @@
     <Compile Include="Service\NotaFiscalTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TesteImposto.Data\TesteImposto.Data.csproj">
+      <Project>{BBD15886-EF24-41CB-9FD2-19B30C5311ED}</Project>
+      <Name>TesteImposto.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TesteImposto.Domain\TesteImposto.Domain.csproj">
       <Project>{4e72e6ad-d24c-4600-a39a-60a900663e5b}</Project>
       <Name>TesteImposto.Domain</Name>
@@ -67,6 +73,10 @@
     <ProjectReference Include="..\TesteImposto.Service\TesteImposto.Service.csproj">
       <Project>{7E1FC764-9507-454B-A27D-2397997C1A24}</Project>
       <Name>TesteImposto.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TesteImposto.Shared\TesteImposto.Shared.csproj">
+      <Project>{b444377e-1ddf-4bc9-a8e4-3f87fd7ffdb9}</Project>
+      <Name>TesteImposto.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

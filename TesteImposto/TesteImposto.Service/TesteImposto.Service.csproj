@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseService.cs" />
     <Compile Include="NotaFiscalService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -53,6 +52,10 @@
     <ProjectReference Include="..\TesteImposto.Domain\TesteImposto.Domain.csproj">
       <Project>{4e72e6ad-d24c-4600-a39a-60a900663e5b}</Project>
       <Name>TesteImposto.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TesteImposto.Shared\TesteImposto.Shared.csproj">
+      <Project>{B444377E-1DDF-4BC9-A8E4-3F87FD7FFDB9}</Project>
+      <Name>TesteImposto.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

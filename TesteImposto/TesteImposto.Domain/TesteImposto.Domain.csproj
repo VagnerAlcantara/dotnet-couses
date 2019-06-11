@@ -41,12 +41,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseDomain.cs" />
+    <Compile Include="Interfaces\Repositories\INotaFiscalItemRepository.cs" />
+    <Compile Include="Interfaces\Repositories\INotaFiscalRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
+    <Compile Include="Interfaces\Services\INotaFiscalService.cs" />
+    <Compile Include="Interfaces\Shared\INotification.cs" />
     <Compile Include="NotaFiscal.cs" />
     <Compile Include="NotaFiscalItem.cs" />
     <Compile Include="Pedido.cs" />
     <Compile Include="PedidoItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TesteImposto.Shared\TesteImposto.Shared.csproj">
+      <Project>{B444377E-1DDF-4BC9-A8E4-3F87FD7FFDB9}</Project>
+      <Name>TesteImposto.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

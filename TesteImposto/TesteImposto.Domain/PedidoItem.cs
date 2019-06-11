@@ -1,9 +1,11 @@
-﻿namespace TesteImposto.Domain
+﻿using TesteImposto.Shared;
+
+namespace TesteImposto.Domain
 {
     /// <summary>
     /// Item para geração de um pedido
     /// </summary>
-    public class PedidoItem : BaseDomain
+    public class PedidoItem : Notification
     {
         public string NomeProduto { get; private set; }
         public string CodigoProduto { get; private set; }

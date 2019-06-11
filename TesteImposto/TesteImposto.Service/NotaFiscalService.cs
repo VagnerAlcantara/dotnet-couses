@@ -1,8 +1,9 @@
 ﻿using TesteImposto.Domain;
+using TesteImposto.Shared;
 
 namespace TesteImposto.Service
 {
-    public class NotaFiscalService : BaseService
+    public class NotaFiscalService : Notification
     {
         public void GerarNotaFiscal(Pedido pedido)
         {
