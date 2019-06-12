@@ -10,6 +10,7 @@ namespace TesteImposto
     public partial class FormImposto : Form
     {
         private Pedido _pedido;
+        private NotaFiscalService _notaFiscalService;
 
         public FormImposto()
         {
@@ -24,43 +25,26 @@ namespace TesteImposto
             try
             {
                 CriarPedido();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao criar pedido");
-                return;
-            }
-
-            try
-            {
                 CriarItemsPedido();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao criar itens pedido");
-                return;
-            }
 
-            try
-            {
                 if (!_pedido.IsValid)
                 {
                     MessageBox.Show("Erro ao gerar nota fiscal");
                     return;
                 }
 
-                NotaFiscalService notaFiscalService = new NotaFiscalService();
+                _notaFiscalService = new NotaFiscalService();
 
-                notaFiscalService.GerarNotaFiscal(_pedido);
+                _notaFiscalService.GerarNotaFiscal(_pedido);
 
-                if (notaFiscalService.IsValid)
+                if (_notaFiscalService.IsValid)
                 {
                     MessageBox.Show("Operação efetuada com sucesso");
                     return;
                 }
                 else
                 {
-                    string msgInfo = string.Concat("Atenção!\nErro ao gerar nota fiscal!\nPor favor, corrigir os seguintes itens: \n", string.Join("\n", notaFiscalService.Errors.Select(i => i).ToArray()));
+                    string msgInfo = string.Concat("Atenção!\nErro ao gerar nota fiscal!\nPor favor, corrigir os seguintes itens: \n", string.Join("\n", _notaFiscalService.Errors.Select(i => i).ToArray()));
                     MessageBox.Show(msgInfo, "Atenção");
                     return;
                 }
@@ -93,6 +77,41 @@ namespace TesteImposto
             table.Columns.Add(new DataColumn("Brinde", typeof(bool)));
             return table;
         }
+
+        /// <summary>
+        /// Lista de estados
+        /// </summary>
+        /// <returns></returns>
+        private string[,] GetEstados() => new string[,]
+        {
+            { "AC", "Acre" },
+            { "AL", "Alagoas" },
+            { "AP", "Amapá" },
+            { "AM", "Amazonas" },
+            { "BA", "Bahia" },
+            { "CE", "Ceará" },
+            { "DF", "Distrito Federal" },
+            { "ES", "Espírito Santo" },
+            { "GO", "Goiás" },
+            { "MA", "Maranhão" },
+            { "MT", "Mato Grosso" },
+            { "MS", "Mato Grosso do Sul" },
+            { "MG", "Minas Gerais" },
+            { "PA", "Pará" },
+            { "PB", "Paraíba" },
+            { "PR", "Paraná" },
+            { "PE", "Pernambuco" },
+            { "PI", "Piauí" },
+            { "RJ", "Rio de Janeiro" },
+            { "RN", "Rio Grande do Norte" },
+            { "RS", "Rio Grande do Sul" },
+            { "RO", "Rondônia" },
+            { "RR", "Roraima" },
+            { "SC", "Santa Catarina" },
+            { "SP", "São Paulo" },
+            { "SE", "Sergipe" },
+            { "TO", "Tocantins" }
+        };
 
         /// <summary>
         /// Recupera e cria itens do pedido informado pelo usuário

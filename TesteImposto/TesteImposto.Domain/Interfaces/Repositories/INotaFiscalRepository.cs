@@ -2,6 +2,6 @@
 {
     public interface INotaFiscalRepository
     {
-        void GerarNotaFiscal(NotaFiscal entity);
+        void GravarNotaFiscal(NotaFiscal entity);
     }
 }

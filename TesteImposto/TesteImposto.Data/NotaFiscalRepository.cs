@@ -5,45 +5,61 @@ using System.Data;
 using System.Data.SqlClient;
 using TesteImposto.Domain;
 using TesteImposto.Domain.Interfaces.Repositories;
+using TesteImposto.Shared;
 
 namespace TesteImposto.Data
 {
-    public class NotaFiscalRepository : INotaFiscalRepository
+    public class NotaFiscalRepository : Notification, INotaFiscalRepository
     {
         private DbContext _dbContext;
 
-        public void GerarNotaFiscal(NotaFiscal entity)
+        /// <summary>
+        /// Grava a nota fiscal
+        /// </summary>
+        /// <param name="notaFiscal">Dados da Nota fiscal</param>
+        public void GravarNotaFiscal(NotaFiscal notaFiscal)
         {
-            using (_dbContext = new DbContext())
-            {
-                List<SqlParameter> parameterList = new List<SqlParameter>()
+            List<SqlParameter> parameterList = new List<SqlParameter>()
                     {
-                    new SqlParameter() { ParameterName = "@pId", Value = entity.Id, Direction = ParameterDirection.Output, SqlDbType = SqlDbType.Int },
-                    new SqlParameter() { ParameterName = "@pNumeroNotaFiscal", Value = entity.NumeroNotaFiscal, SqlDbType = SqlDbType.Int },
-                    new SqlParameter() { ParameterName = "@pSerie", Value = entity.Serie, SqlDbType = SqlDbType.Int },
-                    new SqlParameter() { ParameterName = "@pNomeCliente", Value = entity.NomeCliente, SqlDbType = SqlDbType.VarChar, Size = 50 },
-                    new SqlParameter() { ParameterName = "@pEstadoDestino", Value = entity.EstadoDestino, SqlDbType = SqlDbType.VarChar, Size = 50 },
-                    new SqlParameter() { ParameterName = "@pEstadoOrigem", Value = entity.EstadoOrigem, SqlDbType = SqlDbType.VarChar, Size = 50 }
+                    new SqlParameter() { ParameterName = "@pId", Value = notaFiscal.Id, Direction = ParameterDirection.Output, SqlDbType = SqlDbType.Int },
+                    new SqlParameter() { ParameterName = "@pNumeroNotaFiscal", Value = notaFiscal.NumeroNotaFiscal, SqlDbType = SqlDbType.Int },
+                    new SqlParameter() { ParameterName = "@pSerie", Value = notaFiscal.Serie, SqlDbType = SqlDbType.Int },
+                    new SqlParameter() { ParameterName = "@pNomeCliente", Value = notaFiscal.NomeCliente, SqlDbType = SqlDbType.VarChar, Size = 50 },
+                    new SqlParameter() { ParameterName = "@pEstadoDestino", Value = notaFiscal.EstadoDestino, SqlDbType = SqlDbType.VarChar, Size = 50 },
+                    new SqlParameter() { ParameterName = "@pEstadoOrigem", Value = notaFiscal.EstadoOrigem, SqlDbType = SqlDbType.VarChar, Size = 50 }
                 };
 
+            using (_dbContext = new DbContext())
+            {
                 using (SqlCommand sqlCommand = new SqlCommand("P_NOTA_FISCAL", _dbContext.SqlConnection, _dbContext.SqlTransaction))
                 {
                     try
                     {
                         sqlCommand.CommandType = CommandType.StoredProcedure;
                         sqlCommand.Parameters.AddRange(parameterList.ToArray());
-                        var result = sqlCommand.ExecuteReader();
+                        var result = sqlCommand.ExecuteScalar();
 
                         if (result != null)
-                            entity.Id = Convert.ToInt32(result);
+                            notaFiscal.Id = Convert.ToInt32(result);
+                        else
+                        {
+                            AddError("Erro ao gravar Nota Fiscal.");
+                        }
 
                         NotaFiscalItemRepository notaFiscalItemRepository = new NotaFiscalItemRepository();
-                        notaFiscalItemRepository.Add(entity.ItensDaNotaFiscal, entity.Id);
-                        _dbContext.Commit();
+                        notaFiscalItemRepository.GravarItemNotaFiscal(notaFiscal.ItensDaNotaFiscal, notaFiscal.Id);
+
+                        if (notaFiscalItemRepository.IsValid)
+                            _dbContext.Commit();
+                        else
+                        {
+                            AddError(notaFiscalItemRepository.Errors);
+                            _dbContext.Rollback();
+                        }
                     }
                     catch (Exception ex)
                     {
-                        _dbContext.Dispose();
+                        AddError("Erro ao gravar Nota Fiscal. details: " + ex.Message);
                         _dbContext.Rollback();
                     }
                     finally

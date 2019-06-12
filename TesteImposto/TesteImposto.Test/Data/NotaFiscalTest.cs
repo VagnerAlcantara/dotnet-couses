@@ -28,7 +28,7 @@ namespace TesteImposto.Test.Data
                 {
                     //act
                     NotaFiscalRepository notaFiscalRepository = new NotaFiscalRepository();
-                    notaFiscalRepository.GerarNotaFiscal(notaFiscal);
+                    notaFiscalRepository.GravarNotaFiscal(notaFiscal);
                 }
             }
 

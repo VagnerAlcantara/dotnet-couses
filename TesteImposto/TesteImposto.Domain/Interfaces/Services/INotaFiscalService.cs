@@ -1,5 +1,4 @@
-﻿using System;
-using TesteImposto.Domain.Interfaces.Shared;
+﻿using TesteImposto.Domain.Interfaces.Shared;
 
 namespace TesteImposto.Domain.Interfaces.Services
 {

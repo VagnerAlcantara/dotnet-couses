@@ -1,17 +1,23 @@
 ﻿using Locadora.Data;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using TesteImposto.Domain;
 using TesteImposto.Domain.Interfaces.Repositories;
+using TesteImposto.Shared;
 
 namespace TesteImposto.Data
 {
-    internal class NotaFiscalItemRepository : INotaFiscalItemRepository
+    internal class NotaFiscalItemRepository : Notification, INotaFiscalItemRepository
     {
         private DbContext _dbContext;
 
-        public void Add(NotaFiscalItem entity)
+        /// <summary>
+        /// Grava um item da nota fiscal
+        /// </summary>
+        /// <param name="entity">Item da nota fiscal</param>
+        private void GravarItemNotaFiscal(NotaFiscalItem entity)
         {
             using (_dbContext = new DbContext())
             {
@@ -30,19 +36,34 @@ namespace TesteImposto.Data
 
                 using (SqlCommand sqlCommand = new SqlCommand("P_NOTA_FISCAL_ITEM", _dbContext.SqlConnection))
                 {
-                    sqlCommand.CommandType = CommandType.StoredProcedure;
-                    sqlCommand.Parameters.AddRange(parameterList.ToArray());
-                    var result = sqlCommand.ExecuteNonQuery();
+                    try
+                    {
+                        sqlCommand.CommandType = CommandType.StoredProcedure;
+                        sqlCommand.Parameters.AddRange(parameterList.ToArray());
+                        var result = sqlCommand.ExecuteNonQuery();
+
+                        if (result == 0)
+                            AddError("Erro ao gravar item da Nota Fiscal");
+                    }
+                    catch (Exception ex)
+                    {
+                        AddError("Erro ao gravar item da Nota Fiscal. details: " + ex.Message);
+                    }
                 }
             }
         }
-
-        public void Add(IEnumerable<NotaFiscalItem> entities, int idNotaFiscal)
+        
+        /// <summary>
+        /// Grava uma lista de itens para nota fiscal
+        /// </summary>
+        /// <param name="items">Itens da nota fiscal</param>
+        /// <param name="idNotaFiscal">Id da nota fiscal relacionado a o item</param>
+        public void GravarItemNotaFiscal(IEnumerable<NotaFiscalItem> items, int idNotaFiscal)
         {
-            foreach (var entity in entities)
+            foreach (var entity in items)
             {
                 entity.IdNotaFiscal = idNotaFiscal;
-                Add(entity);
+                GravarItemNotaFiscal(entity);
             }
         }
     }
