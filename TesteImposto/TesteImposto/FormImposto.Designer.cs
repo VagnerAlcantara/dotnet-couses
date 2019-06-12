@@ -136,6 +136,7 @@
             this.Controls.Add(this.label1);
             this.Name = "FormImposto";
             this.Text = "Calculo de imposto";
+            this.Load += new System.EventHandler(this.FormImposto_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPedidos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

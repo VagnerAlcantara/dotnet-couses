@@ -38,7 +38,7 @@ namespace TesteImposto.Test.Domain
         [TestCategory("Item da nota fiscal")]
         public void CreateInvalidNotaFiscal(int idNotaFiscal, string cfop, string tipoIcms, double? baseIcms, double? aliquotaIcms, double? valorIcms, string nomeProduto, string codigoProduto, double valorProduto, bool brinde)
         {
-            NotaFiscalItem notaFiscalItem = new NotaFiscalItem(idNotaFiscal, cfop, tipoIcms, baseIcms, aliquotaIcms, valorIcms, nomeProduto, codigoProduto, valorProduto, brinde);
+            NotaFiscalItem notaFiscalItem = new NotaFiscalItem(idNotaFiscal, cfop, tipoIcms, baseIcms, aliquotaIcms, valorIcms, nomeProduto, codigoProduto, valorProduto, brinde, 0);
 
             Assert.IsFalse(notaFiscalItem.IsValid);
         }
@@ -65,7 +65,7 @@ namespace TesteImposto.Test.Domain
         [TestCategory("Nota Fiscal")]
         public void CreateValidNotaFiscal(int idNotaFiscal, string cfop, string tipoIcms, double? baseIcms, double? aliquotaIcms, double? valorIcms, string nomeProduto, string codigoProduto, double valorProduto, bool brinde)
         {
-            NotaFiscalItem notaFiscalItem = new NotaFiscalItem(idNotaFiscal, cfop, tipoIcms, baseIcms, aliquotaIcms, valorIcms, nomeProduto, codigoProduto, valorProduto, brinde);
+            NotaFiscalItem notaFiscalItem = new NotaFiscalItem(idNotaFiscal, cfop, tipoIcms, baseIcms, aliquotaIcms, valorIcms, nomeProduto, codigoProduto, valorProduto, brinde, 0);
 
             Assert.IsTrue(notaFiscalItem.IsValid);
         }

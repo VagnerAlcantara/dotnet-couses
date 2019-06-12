@@ -54,7 +54,8 @@ CREATE TABLE [dbo].[NotaFiscalItem](
 	[CodigoProduto] [varchar](20) NULL,
 	[BaseCalculoIpi] [decimal](18, 5) NULL,
 	[AliquotaIpi]	 [decimal](18, 5) NULL,
-	[ValorIpi]		 [decimal](18, 5) NULL
+	[ValorIpi]		 [decimal](18, 5) NULL,
+	[PercentualDesconto]		 [decimal](18, 5) NULL
 
  CONSTRAINT [PK_NotaFiscalItem] PRIMARY KEY CLUSTERED 
 (

@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Estado.cs" />
     <Compile Include="Interfaces\Repositories\INotaFiscalItemRepository.cs" />
     <Compile Include="Interfaces\Repositories\INotaFiscalRepository.cs" />
     <Compile Include="Interfaces\Services\INotaFiscalService.cs" />

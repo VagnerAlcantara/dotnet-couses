@@ -21,11 +21,15 @@ namespace TesteImposto.Service
         /// <param name="pedido">Dados do pedido para geração da nota fiscal</param>
         public void GerarNotaFiscal(Pedido pedido)
         {
+            if (pedido.ItensDoPedido == null || pedido.ItensDoPedido.Count == 0)
+                pedido.AddError("É obrigatório o preenchimento de ao menos um item para o pedido");
+
             if (!pedido.IsValid)
             {
                 AddError(pedido.Errors);
                 return;
             }
+
             NotaFiscal notaFiscal = new NotaFiscal(pedido.NomeCliente, pedido.EstadoDestino, pedido.EstadoOrigem);
 
             notaFiscal = notaFiscal.EmitirNotaFiscal(pedido);

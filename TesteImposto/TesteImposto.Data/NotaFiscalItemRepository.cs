@@ -36,6 +36,9 @@ namespace TesteImposto.Data
                         new SqlParameter() { ParameterName = "@pAliquotaIpi", Value = notaFiscalItem.AliquotaIpi, SqlDbType = SqlDbType.Decimal},
                         new SqlParameter() { ParameterName = "@pValorIpi", Value = notaFiscalItem.ValorIpi, SqlDbType = SqlDbType.Decimal},
 
+                        new SqlParameter() { ParameterName = "@pPercentualDesconto", Value = notaFiscalItem.PercentualDesconto, SqlDbType = SqlDbType.Decimal},
+
+
                     };
                 using (SqlCommand sqlCommand = new SqlCommand("P_NOTA_FISCAL_ITEM", conn))
                 {

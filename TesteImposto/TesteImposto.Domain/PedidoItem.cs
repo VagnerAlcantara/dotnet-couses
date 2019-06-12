@@ -19,7 +19,7 @@ namespace TesteImposto.Domain
             if (IsValid)
                 CreateItem(nomeProduto, codigoProduto, valorItemPedido, brinde);
         }
-        
+
         /// <summary>
         /// Cria um item de pedido
         /// </summary>
@@ -34,7 +34,7 @@ namespace TesteImposto.Domain
             ValorItemPedido = valorItemPedido;
             Brinde = brinde;
         }
-        
+
         /// <summary>
         /// Valida um item de pedido
         /// </summary>
@@ -51,6 +51,16 @@ namespace TesteImposto.Domain
 
             if (valorItemPedido < 0 || valorItemPedido > int.MaxValue)
                 AddError("Valor do produto inválido");
+        }
+
+        /// <summary>
+        /// Aplica desconto ao valor do item
+        /// </summary>
+        /// <param name="valorItemPedido">Valor de item atual</param>
+        /// <param name="percentualDesconto"></param>
+        internal void AplicarDesconto(double percentualDesconto)
+        {
+            ValorItemPedido = (ValorItemPedido - (ValorItemPedido * percentualDesconto) / 100);
         }
     }
 }

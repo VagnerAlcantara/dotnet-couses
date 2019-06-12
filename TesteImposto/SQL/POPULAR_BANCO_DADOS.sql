@@ -17,6 +17,7 @@ DECLARE @vCodigoProduto varchar(20)
 DECLARE @vBaseCalculoIpi decimal(18,5)
 DECLARE @vAliquotaIpi	 decimal(18,5)
 DECLARE @vValorIpi		 decimal(18,5)
+DECLARE @vPercentualDesconto		 decimal(18,5)
 
 WHILE (@vCount <= 1000) 
 BEGIN
@@ -60,7 +61,8 @@ BEGIN
 	SET @vBaseCalculoIpi = 1
 	SET @vAliquotaIpi	= 1
 	SET @vValorIpi		= 2
-
+	SET @vPercentualDesconto = 0
+	 
 	EXEC [dbo].[P_NOTA_FISCAL_ITEM]
 		@pId = @vIdItem,
 		@pIdNotaFiscal = @vIdNota,
@@ -73,6 +75,7 @@ BEGIN
 		@pCodigoProduto = @vCodigoProduto,
 		@pBaseCalculoIpi =  @vBaseCalculoIpi, 
 		@pAliquotaIpi	 =  @vAliquotaIpi,	 
-		@pValorIpi		 =  @vValorIpi		 
+		@pValorIpi		 =  @vValorIpi,
+		@pPercentualDesconto		 =  @vPercentualDesconto
 	SET @vCount = @vCount + 1
 END

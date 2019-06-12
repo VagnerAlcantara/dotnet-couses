@@ -19,6 +19,7 @@ namespace TesteImposto.Domain
         public double BaseCalculoIpi { get; set; }
         public double AliquotaIpi { get; set; }
         public double ValorIpi { get; set; }
+        public double PercentualDesconto { get; set; }
 
         private NotaFiscalItem()
         {
@@ -38,12 +39,13 @@ namespace TesteImposto.Domain
         /// <param name="codigoProduto">Código do produto</param>
         /// <param name="valorProduto">Base cálculo IPI</param>
         /// <param name="brinde">Se o item é um brinde</param>
-        public NotaFiscalItem(int idNotaFiscal, string cfop, string tipoIcms, double? baseIcms, double? aliquotaIcms, double? valorIcms, string nomeProduto, string codigoProduto, double? valorProduto, bool brinde)
+        /// <param name="percentualDesconto">Percentual de desconto aplicado no item</param>
+        public NotaFiscalItem(int idNotaFiscal, string cfop, string tipoIcms, double? baseIcms, double? aliquotaIcms, double? valorIcms, string nomeProduto, string codigoProduto, double? valorProduto, bool brinde, double percentualDesconto)
         {
             ValidateNotaFiscalItem(idNotaFiscal, cfop, tipoIcms, baseIcms, aliquotaIcms, valorIcms, nomeProduto, codigoProduto);
 
             if (IsValid)
-                CreateNotalFiscalItem(idNotaFiscal, cfop, tipoIcms, baseIcms.Value, aliquotaIcms.Value, valorIcms.Value, nomeProduto, codigoProduto, valorProduto.Value, brinde);
+                CreateNotalFiscalItem(idNotaFiscal, cfop, tipoIcms, baseIcms.Value, aliquotaIcms.Value, valorIcms.Value, nomeProduto, codigoProduto, valorProduto.Value, brinde, percentualDesconto);
         }
 
         /// <summary>
@@ -94,7 +96,8 @@ namespace TesteImposto.Domain
         /// <param name="codigoProduto">Código do produto</param>
         /// <param name="valorProduto">Valor do item</param>
         /// <param name="brinde">Se o item é um brinde</param>
-        private void CreateNotalFiscalItem(int idNotaFiscal, string cfop, string tipoIcms, double baseIcms, double aliquotaIcms, double valorIcms, string nomeProduto, string codigoProduto, double valorProduto, bool brinde)
+        /// <param name="percentualDesconto">Percentual de desconto aplicado no item</param>
+        private void CreateNotalFiscalItem(int idNotaFiscal, string cfop, string tipoIcms, double baseIcms, double aliquotaIcms, double valorIcms, string nomeProduto, string codigoProduto, double valorProduto, bool brinde, double percentualDesconto)
         {
             Id = 0;
             IdNotaFiscal = idNotaFiscal;
@@ -107,7 +110,27 @@ namespace TesteImposto.Domain
             CodigoProduto = codigoProduto;
             BaseCalculoIpi = Math.Round(valorProduto, 4);
             AliquotaIpi = Math.Round((brinde ? 0f : 10f), 4);
-            ValorIpi = Math.Round(BaseCalculoIpi * AliquotaIpi, 4);
+            ValorIpi = CalcularValorIpi(BaseCalculoIpi, AliquotaIpi);
+            PercentualDesconto = percentualDesconto;
+        }
+
+        /// <summary>
+        /// Cálcula o valor do ipi com base de calculo ipi multiplicado pela aliquota ipi
+        /// </summary>
+        /// <param name="baseCalculoIpi">base de calculo ipi</param>
+        /// <param name="aliquotaIpi">aliquota ipi</param>
+        /// <returns>Valor do ipi</returns>
+        private double CalcularValorIpi(double baseCalculoIpi, double aliquotaIpi)
+        {
+            try
+            {
+                return Math.Round(baseCalculoIpi * aliquotaIpi, 4);
+            }
+            catch (Exception ex)
+            {
+                AddError("Erro ao calcular valor do ipi");
+            }
+            return 0;
         }
     }
 }

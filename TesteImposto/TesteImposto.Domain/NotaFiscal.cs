@@ -55,6 +55,11 @@ namespace TesteImposto.Domain
 
             foreach (PedidoItem itemPedido in pedido.ItensDoPedido)
             {
+                double descontoSudeste = 10;
+
+                if (Estado.IsSudeste(EstadoOrigem))
+                    itemPedido.AplicarDesconto(descontoSudeste);
+
                 double? baseIcms = GetBaseIcms(cfop, itemPedido.ValorItemPedido);
 
                 double? valorIcms = baseIcms * aliquotaIcms;
@@ -76,7 +81,8 @@ namespace TesteImposto.Domain
                      itemPedido.NomeProduto,
                      itemPedido.CodigoProduto,
                      itemPedido.ValorItemPedido,
-                     itemPedido.Brinde
+                     itemPedido.Brinde,
+                     descontoSudeste
                      );
 
                 if (notaFiscalItem.IsValid)
