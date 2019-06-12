@@ -14,6 +14,9 @@ DECLARE @vAliquotaIcms decimal(18,5)
 DECLARE @vValorIcms decimal(18,5)
 DECLARE @vNomeProduto varchar(50)
 DECLARE @vCodigoProduto varchar(20)
+DECLARE @vBaseCalculoIpi decimal(18,5)
+DECLARE @vAliquotaIpi	 decimal(18,5)
+DECLARE @vValorIpi		 decimal(18,5)
 
 WHILE (@vCount <= 1000) 
 BEGIN
@@ -54,6 +57,9 @@ BEGIN
 	SET @vValorIcms = 10
 	SET @vNomeProduto = 'PRODUTO DE CARGA'
 	SET @vCodigoProduto = '123-5548-555-22'
+	SET @vBaseCalculoIpi = 1
+	SET @vAliquotaIpi	= 1
+	SET @vValorIpi		= 2
 
 	EXEC [dbo].[P_NOTA_FISCAL_ITEM]
 		@pId = @vIdItem,
@@ -64,7 +70,9 @@ BEGIN
 		@pAliquotaIcms = @vAliquotaIcms,
 		@pValorIcms = @vValorIcms,
 		@pNomeProduto = @vNomeProduto,
-		@pCodigoProduto = @vCodigoProduto
-
+		@pCodigoProduto = @vCodigoProduto,
+		@pBaseCalculoIpi =  @vBaseCalculoIpi, 
+		@pAliquotaIpi	 =  @vAliquotaIpi,	 
+		@pValorIpi		 =  @vValorIpi		 
 	SET @vCount = @vCount + 1
 END

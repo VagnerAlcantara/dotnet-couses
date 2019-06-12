@@ -21,7 +21,11 @@ namespace TesteImposto.Service
         /// <param name="pedido">Dados do pedido para geração da nota fiscal</param>
         public void GerarNotaFiscal(Pedido pedido)
         {
-
+            if (!pedido.IsValid)
+            {
+                AddError(pedido.Errors);
+                return;
+            }
             NotaFiscal notaFiscal = new NotaFiscal(pedido.NomeCliente, pedido.EstadoDestino, pedido.EstadoOrigem);
 
             notaFiscal = notaFiscal.EmitirNotaFiscal(pedido);

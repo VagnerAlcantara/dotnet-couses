@@ -1,8 +1,8 @@
-﻿using Locadora.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Transactions;
 using TesteImposto.Domain;
 using TesteImposto.Domain.Interfaces.Repositories;
 using TesteImposto.Shared;
@@ -11,63 +11,71 @@ namespace TesteImposto.Data
 {
     public class NotaFiscalRepository : Notification, INotaFiscalRepository
     {
-        private DbContext _dbContext;
-
         /// <summary>
         /// Grava a nota fiscal
         /// </summary>
         /// <param name="notaFiscal">Dados da Nota fiscal</param>
         public void GravarNotaFiscal(NotaFiscal notaFiscal)
         {
-            List<SqlParameter> parameterList = new List<SqlParameter>()
-                    {
-                    new SqlParameter() { ParameterName = "@pId", Value = notaFiscal.Id, Direction = ParameterDirection.Output, SqlDbType = SqlDbType.Int },
-                    new SqlParameter() { ParameterName = "@pNumeroNotaFiscal", Value = notaFiscal.NumeroNotaFiscal, SqlDbType = SqlDbType.Int },
-                    new SqlParameter() { ParameterName = "@pSerie", Value = notaFiscal.Serie, SqlDbType = SqlDbType.Int },
-                    new SqlParameter() { ParameterName = "@pNomeCliente", Value = notaFiscal.NomeCliente, SqlDbType = SqlDbType.VarChar, Size = 50 },
-                    new SqlParameter() { ParameterName = "@pEstadoDestino", Value = notaFiscal.EstadoDestino, SqlDbType = SqlDbType.VarChar, Size = 50 },
-                    new SqlParameter() { ParameterName = "@pEstadoOrigem", Value = notaFiscal.EstadoOrigem, SqlDbType = SqlDbType.VarChar, Size = 50 }
-                };
-
-            using (_dbContext = new DbContext())
+            try
             {
-                using (SqlCommand sqlCommand = new SqlCommand("P_NOTA_FISCAL", _dbContext.SqlConnection, _dbContext.SqlTransaction))
+                using (var scope = new TransactionScope())
+                {
+                    int idNotaFiscal = Gravar(notaFiscal);
+                    NotaFiscalItemRepository notaFiscalItemRepository = new NotaFiscalItemRepository();
+
+                    notaFiscalItemRepository.GravarItemNotaFiscal(notaFiscal.ItensDaNotaFiscal, idNotaFiscal);
+
+                    scope.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                AddError(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Grava a nota fiscal
+        /// </summary>
+        /// <param name="notaFiscal">Dados da Nota fiscal</param>
+        private int Gravar(NotaFiscal notaFiscal)
+        {
+            int idNotaFiscal = 0;
+
+            List<SqlParameter> parameterList = new List<SqlParameter>()
+            {
+                new SqlParameter() { ParameterName = "@pId", Value = notaFiscal.Id, Direction = ParameterDirection.InputOutput, SqlDbType = SqlDbType.Int },
+                new SqlParameter() { ParameterName = "@pNumeroNotaFiscal", Value = notaFiscal.NumeroNotaFiscal, SqlDbType = SqlDbType.Int },
+                new SqlParameter() { ParameterName = "@pSerie", Value = notaFiscal.Serie, SqlDbType = SqlDbType.Int },
+                new SqlParameter() { ParameterName = "@pNomeCliente", Value = notaFiscal.NomeCliente, SqlDbType = SqlDbType.VarChar, Size = 50 },
+                new SqlParameter() { ParameterName = "@pEstadoDestino", Value = notaFiscal.EstadoDestino, SqlDbType = SqlDbType.VarChar, Size = 50 },
+                new SqlParameter() { ParameterName = "@pEstadoOrigem", Value = notaFiscal.EstadoOrigem, SqlDbType = SqlDbType.VarChar, Size = 50 }
+            };
+
+            using (var conn = new SqlConnection(DbContext.SqlConn))
+            {
+                conn.Open();
+                using (SqlCommand sqlCommand = new SqlCommand("P_NOTA_FISCAL", conn))
                 {
                     try
                     {
                         sqlCommand.CommandType = CommandType.StoredProcedure;
                         sqlCommand.Parameters.AddRange(parameterList.ToArray());
-                        var result = sqlCommand.ExecuteScalar();
+                        var result = sqlCommand.ExecuteNonQuery();
 
-                        if (result != null)
-                            notaFiscal.Id = Convert.ToInt32(result);
-                        else
-                        {
-                            AddError("Erro ao gravar Nota Fiscal.");
-                        }
+                        if (result == 0)
+                            throw new Exception("Erro ao gravar Nota Fiscal.");
 
-                        NotaFiscalItemRepository notaFiscalItemRepository = new NotaFiscalItemRepository();
-                        notaFiscalItemRepository.GravarItemNotaFiscal(notaFiscal.ItensDaNotaFiscal, notaFiscal.Id);
-
-                        if (notaFiscalItemRepository.IsValid)
-                            _dbContext.Commit();
-                        else
-                        {
-                            AddError(notaFiscalItemRepository.Errors);
-                            _dbContext.Rollback();
-                        }
+                        idNotaFiscal =(int)sqlCommand.Parameters["@pId"].Value;
                     }
                     catch (Exception ex)
                     {
                         AddError("Erro ao gravar Nota Fiscal. details: " + ex.Message);
-                        _dbContext.Rollback();
-                    }
-                    finally
-                    {
-                        _dbContext.Dispose();
                     }
                 }
             }
+            return idNotaFiscal;
         }
     }
 }

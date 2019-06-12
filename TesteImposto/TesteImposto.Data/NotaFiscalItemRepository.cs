@@ -1,5 +1,4 @@
-﻿using Locadora.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -11,30 +10,34 @@ namespace TesteImposto.Data
 {
     internal class NotaFiscalItemRepository : Notification, INotaFiscalItemRepository
     {
-        private DbContext _dbContext;
-
         /// <summary>
         /// Grava um item da nota fiscal
         /// </summary>
-        /// <param name="entity">Item da nota fiscal</param>
-        private void GravarItemNotaFiscal(NotaFiscalItem entity)
+        /// <param name="notaFiscalItem">Item da nota fiscal</param>
+        private void GravarItemNotaFiscal(NotaFiscalItem notaFiscalItem)
         {
-            using (_dbContext = new DbContext())
+            using (var conn = new SqlConnection(DbContext.SqlConn))
             {
+                conn.Open();
+
                 List<SqlParameter> parameterList = new List<SqlParameter>()
                     {
-                        new SqlParameter() { ParameterName = "@pId",  Direction = ParameterDirection.Output, SqlDbType = SqlDbType.Int },
-                        new SqlParameter() { ParameterName = "@pIdNotaFiscal", Value = entity.IdNotaFiscal, SqlDbType = SqlDbType.Int },
-                        new SqlParameter() { ParameterName = "@pCfop",Value = entity.Cfop, SqlDbType = SqlDbType.VarChar, Size = 5},
-                        new SqlParameter() { ParameterName = "@pTipoIcms", Value = entity.TipoIcms, SqlDbType =  SqlDbType.VarChar, Size = 20},
-                        new SqlParameter() { ParameterName = "@pBaseIcms", Value = entity.BaseIcms, SqlDbType = SqlDbType.Decimal},
-                        new SqlParameter() { ParameterName = "@pAliquotaIcms", Value = entity.AliquotaIcms, SqlDbType = SqlDbType.Decimal},
-                        new SqlParameter() { ParameterName = "@pValorIcms", Value = entity.ValorIcms, SqlDbType = SqlDbType.Decimal},
-                        new SqlParameter() { ParameterName = "@pNomeProduto", Value = entity.NomeProduto, SqlDbType = SqlDbType.VarChar, Size = 50},
-                        new SqlParameter() { ParameterName = "@pCodigoProduto", Value = entity.CodigoProduto, SqlDbType = SqlDbType.VarChar, Size = 50}
-                    };
+                        new SqlParameter() { ParameterName = "@pId",  Value = notaFiscalItem.Id, SqlDbType = SqlDbType.Int },
+                        new SqlParameter() { ParameterName = "@pIdNotaFiscal", Value = notaFiscalItem.IdNotaFiscal, SqlDbType = SqlDbType.Int },
+                        new SqlParameter() { ParameterName = "@pCfop",Value = notaFiscalItem.Cfop, SqlDbType = SqlDbType.VarChar, Size = 5},
+                        new SqlParameter() { ParameterName = "@pTipoIcms", Value = notaFiscalItem.TipoIcms, SqlDbType =  SqlDbType.VarChar, Size = 20},
+                        new SqlParameter() { ParameterName = "@pBaseIcms", Value = notaFiscalItem.BaseIcms, SqlDbType = SqlDbType.Decimal},
+                        new SqlParameter() { ParameterName = "@pAliquotaIcms", Value = notaFiscalItem.AliquotaIcms, SqlDbType = SqlDbType.Decimal},
+                        new SqlParameter() { ParameterName = "@pValorIcms", Value = notaFiscalItem.ValorIcms, SqlDbType = SqlDbType.Decimal},
+                        new SqlParameter() { ParameterName = "@pNomeProduto", Value = notaFiscalItem.NomeProduto, SqlDbType = SqlDbType.VarChar, Size = 50},
+                        new SqlParameter() { ParameterName = "@pCodigoProduto", Value = notaFiscalItem.CodigoProduto, SqlDbType = SqlDbType.VarChar, Size = 50},
 
-                using (SqlCommand sqlCommand = new SqlCommand("P_NOTA_FISCAL_ITEM", _dbContext.SqlConnection))
+                        new SqlParameter() { ParameterName = "@pBaseCalculoIpi", Value = notaFiscalItem.BaseCalculoIpi, SqlDbType = SqlDbType.Decimal},
+                        new SqlParameter() { ParameterName = "@pAliquotaIpi", Value = notaFiscalItem.AliquotaIpi, SqlDbType = SqlDbType.Decimal},
+                        new SqlParameter() { ParameterName = "@pValorIpi", Value = notaFiscalItem.ValorIpi, SqlDbType = SqlDbType.Decimal},
+
+                    };
+                using (SqlCommand sqlCommand = new SqlCommand("P_NOTA_FISCAL_ITEM", conn))
                 {
                     try
                     {
@@ -43,7 +46,7 @@ namespace TesteImposto.Data
                         var result = sqlCommand.ExecuteNonQuery();
 
                         if (result == 0)
-                            AddError("Erro ao gravar item da Nota Fiscal");
+                            throw new Exception("Erro ao gravar item da Nota Fiscal");
                     }
                     catch (Exception ex)
                     {
@@ -52,7 +55,7 @@ namespace TesteImposto.Data
                 }
             }
         }
-        
+
         /// <summary>
         /// Grava uma lista de itens para nota fiscal
         /// </summary>
@@ -64,6 +67,9 @@ namespace TesteImposto.Data
             {
                 entity.IdNotaFiscal = idNotaFiscal;
                 GravarItemNotaFiscal(entity);
+
+                if (!IsValid)
+                    return;
             }
         }
     }

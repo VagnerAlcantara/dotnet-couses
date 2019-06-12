@@ -11,6 +11,14 @@ GO
 SET ANSI_PADDING ON
 GO
 
+IF (EXISTS (SELECT * 
+                 FROM INFORMATION_SCHEMA.TABLES 
+                 WHERE TABLE_SCHEMA = 'dbo' 
+                 AND  TABLE_NAME = 'NotaFiscal'))
+BEGIN
+    drop table [dbo].[NotaFiscal]
+END
+
 CREATE TABLE [dbo].[NotaFiscal](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[NumeroNotaFiscal] [int] NULL,
@@ -26,6 +34,14 @@ CREATE TABLE [dbo].[NotaFiscal](
 
 GO
 
+IF (EXISTS (SELECT * 
+                 FROM INFORMATION_SCHEMA.TABLES 
+                 WHERE TABLE_SCHEMA = 'dbo' 
+                 AND  TABLE_NAME = 'NotaFiscalItem'))
+BEGIN
+    drop table [dbo].[NotaFiscalItem]
+END
+
 CREATE TABLE [dbo].[NotaFiscalItem](
 	[Id] [int]  IDENTITY(1,1) NOT NULL,
 	[IdNotaFiscal] [int] NULL,
@@ -36,6 +52,10 @@ CREATE TABLE [dbo].[NotaFiscalItem](
 	[ValorIcms] [decimal](18, 5) NULL,
 	[NomeProduto] [varchar](50) NULL,
 	[CodigoProduto] [varchar](20) NULL,
+	[BaseCalculoIpi] [decimal](18, 5) NULL,
+	[AliquotaIpi]	 [decimal](18, 5) NULL,
+	[ValorIpi]		 [decimal](18, 5) NULL
+
  CONSTRAINT [PK_NotaFiscalItem] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

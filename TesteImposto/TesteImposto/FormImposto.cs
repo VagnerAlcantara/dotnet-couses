@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
@@ -82,36 +84,39 @@ namespace TesteImposto
         /// Lista de estados
         /// </summary>
         /// <returns></returns>
-        private string[,] GetEstados() => new string[,]
+        private ObservableCollection<KeyValuePair<string, string>> GetEstados()
         {
-            { "AC", "Acre" },
-            { "AL", "Alagoas" },
-            { "AP", "Amapá" },
-            { "AM", "Amazonas" },
-            { "BA", "Bahia" },
-            { "CE", "Ceará" },
-            { "DF", "Distrito Federal" },
-            { "ES", "Espírito Santo" },
-            { "GO", "Goiás" },
-            { "MA", "Maranhão" },
-            { "MT", "Mato Grosso" },
-            { "MS", "Mato Grosso do Sul" },
-            { "MG", "Minas Gerais" },
-            { "PA", "Pará" },
-            { "PB", "Paraíba" },
-            { "PR", "Paraná" },
-            { "PE", "Pernambuco" },
-            { "PI", "Piauí" },
-            { "RJ", "Rio de Janeiro" },
-            { "RN", "Rio Grande do Norte" },
-            { "RS", "Rio Grande do Sul" },
-            { "RO", "Rondônia" },
-            { "RR", "Roraima" },
-            { "SC", "Santa Catarina" },
-            { "SP", "São Paulo" },
-            { "SE", "Sergipe" },
-            { "TO", "Tocantins" }
-        };
+            return new ObservableCollection<KeyValuePair<string, string>>()
+            {
+            new KeyValuePair<string, string>( "AC", "Acre" ),
+            new KeyValuePair<string, string>( "AL", "Alagoas" ),
+            new KeyValuePair<string, string>( "AP", "Amapá" ),
+            new KeyValuePair<string, string>( "AM", "Amazonas" ),
+            new KeyValuePair<string, string>( "BA", "Bahia" ),
+            new KeyValuePair<string, string>( "CE", "Ceará" ),
+            new KeyValuePair<string, string>( "DF", "Distrito Federal" ),
+            new KeyValuePair<string, string>( "ES", "Espírito Santo" ),
+            new KeyValuePair<string, string>( "GO", "Goiás" ),
+            new KeyValuePair<string, string>( "MA", "Maranhão" ),
+            new KeyValuePair<string, string>( "MT", "Mato Grosso" ),
+            new KeyValuePair<string, string>( "MS", "Mato Grosso do Sul" ),
+            new KeyValuePair<string, string>( "MG", "Minas Gerais" ),
+            new KeyValuePair<string, string>( "PA", "Pará" ),
+            new KeyValuePair<string, string>( "PB", "Paraíba" ),
+            new KeyValuePair<string, string>( "PR", "Paraná" ),
+            new KeyValuePair<string, string>( "PE", "Pernambuco" ),
+            new KeyValuePair<string, string>( "PI", "Piauí" ),
+            new KeyValuePair<string, string>( "RJ", "Rio de Janeiro" ),
+            new KeyValuePair<string, string>( "RN", "Rio Grande do Norte" ),
+            new KeyValuePair<string, string>( "RS", "Rio Grande do Sul" ),
+            new KeyValuePair<string, string>( "RO", "Rondônia" ),
+            new KeyValuePair<string, string>( "RR", "Roraima" ),
+            new KeyValuePair<string, string>( "SC", "Santa Catarina" ),
+            new KeyValuePair<string, string>( "SP", "São Paulo" ),
+            new KeyValuePair<string, string>( "SE", "Sergipe" ),
+            new KeyValuePair<string, string>( "TO", "Tocantins" )
+            };
+        }
 
         /// <summary>
         /// Recupera e cria itens do pedido informado pelo usuário
@@ -139,7 +144,7 @@ namespace TesteImposto
         /// </summary>
         private void CriarPedido()
         {
-            _pedido = new Pedido(txtEstadoDestino.Text, txtEstadoOrigem.Text, textBoxNomeCliente.Text);
+            _pedido = new Pedido(cbEstadoOrigem.SelectedValue.ToString(), cbEstadoDestino.SelectedValue.ToString(), textBoxNomeCliente.Text);
 
             if (!_pedido.IsValid)
             {
@@ -148,6 +153,5 @@ namespace TesteImposto
                 return;
             }
         }
-
     }
 }

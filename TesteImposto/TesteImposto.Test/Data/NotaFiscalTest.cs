@@ -29,13 +29,11 @@ namespace TesteImposto.Test.Data
                     //act
                     NotaFiscalRepository notaFiscalRepository = new NotaFiscalRepository();
                     notaFiscalRepository.GravarNotaFiscal(notaFiscal);
+                    Assert.IsTrue(notaFiscalRepository.IsValid);
+
                 }
             }
 
-            //assert
-            //Assert.IsTrue(notaFiscalService.IsValid);
         }
-
-
     }
 }

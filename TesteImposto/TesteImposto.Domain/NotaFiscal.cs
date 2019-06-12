@@ -7,13 +7,13 @@ namespace TesteImposto.Domain
     [Serializable]
     public class NotaFiscal : Notification
     {
-        public int Id { get;  set; }
-        public int NumeroNotaFiscal { get;  set; }
-        public int Serie { get;  set; }
-        public string NomeCliente { get;  set; }
-        public string EstadoDestino { get;  set; }
-        public string EstadoOrigem { get;  set; }
-        public List<NotaFiscalItem> ItensDaNotaFiscal { get;  set; }
+        public int Id { get; set; }
+        public int NumeroNotaFiscal { get; set; }
+        public int Serie { get; set; }
+        public string NomeCliente { get; set; }
+        public string EstadoDestino { get; set; }
+        public string EstadoOrigem { get; set; }
+        public List<NotaFiscalItem> ItensDaNotaFiscal { get; set; }
 
         private NotaFiscal()
         {
@@ -74,7 +74,9 @@ namespace TesteImposto.Domain
                      aliquotaIcms,
                      valorIcms,
                      itemPedido.NomeProduto,
-                     itemPedido.CodigoProduto
+                     itemPedido.CodigoProduto,
+                     itemPedido.ValorItemPedido,
+                     itemPedido.Brinde
                      );
 
                 if (notaFiscalItem.IsValid)

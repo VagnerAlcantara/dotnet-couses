@@ -15,22 +15,20 @@ namespace TesteImposto.Test.Domain
             {
                 return new List<object[]>
                     {
-                        //sem id nf
-                        new object[]{ 0, "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(int.MaxValue).ToString()},
                         //sem cfop
-                        new object[]{ new Random().Next(int.MaxValue), "", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(int.MaxValue).ToString()},
+                        new object[]{ new Random().Next(0, int.MaxValue), "", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(0, int.MaxValue).ToString(), Math.Round(new Random().NextDouble(), 4), false},
                         //sem tipoIcms
-                        new object[]{ new Random().Next(int.MaxValue), "6.000", "", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(int.MaxValue).ToString()},
+                        new object[]{ new Random().Next(0, int.MaxValue), "6.000", "", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(0, int.MaxValue).ToString(), Math.Round(new Random().NextDouble(), 4), true},
                         //sem baseIcms
-                        new object[]{ new Random().Next(int.MaxValue), "6.000", "60", null, Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(int.MaxValue).ToString()},
+                        new object[]{ new Random().Next(0, int.MaxValue), "6.000", "60", null, Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(0, int.MaxValue).ToString(), Math.Round(new Random().NextDouble(), 4), false},
                         //sem aliquotaIcms
-                        new object[]{ new Random().Next(int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), null, Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(int.MaxValue).ToString()},
+                        new object[]{ new Random().Next(0, int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), null, Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(0, int.MaxValue).ToString(), Math.Round(new Random().NextDouble(), 4), true},
                         //sem valorIcms
-                        new object[]{ new Random().Next(int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), null, "Produto A", new Random().Next(int.MaxValue).ToString()},
+                        new object[]{ new Random().Next(0, int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), null, "Produto A", new Random().Next(0, int.MaxValue).ToString(), Math.Round(new Random().NextDouble(), 4), false},
                         //sem nome produto
-                        new object[]{ new Random().Next(int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "", new Random().Next(int.MaxValue).ToString()},
+                        new object[]{ new Random().Next(0, int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "", new Random().Next(0, int.MaxValue).ToString(), Math.Round(new Random().NextDouble(), 4), true},
                         //sem código produto
-                        new object[]{ new Random().Next(int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), null, "Produto A", ""},
+                        new object[]{ new Random().Next(0, int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), null, "Produto A", "", Math.Round(new Random().NextDouble(), 4), false},
                     };
             }
         }
@@ -38,9 +36,9 @@ namespace TesteImposto.Test.Domain
         [DataTestMethod]
         [DynamicData(nameof(ItemNotaFiscalInvalidaList))]
         [TestCategory("Item da nota fiscal")]
-        public void CreateInvalidNotaFiscal(int idNotaFiscal, string cfop, string tipoIcms, double? baseIcms, double? aliquotaIcms, double? valorIcms, string nomeProduto, string codigoProduto)
+        public void CreateInvalidNotaFiscal(int idNotaFiscal, string cfop, string tipoIcms, double? baseIcms, double? aliquotaIcms, double? valorIcms, string nomeProduto, string codigoProduto, double valorProduto, bool brinde)
         {
-            NotaFiscalItem notaFiscalItem = new NotaFiscalItem(idNotaFiscal, cfop, tipoIcms, baseIcms, aliquotaIcms, valorIcms, nomeProduto, codigoProduto);
+            NotaFiscalItem notaFiscalItem = new NotaFiscalItem(idNotaFiscal, cfop, tipoIcms, baseIcms, aliquotaIcms, valorIcms, nomeProduto, codigoProduto, valorProduto, brinde);
 
             Assert.IsFalse(notaFiscalItem.IsValid);
         }
@@ -53,11 +51,11 @@ namespace TesteImposto.Test.Domain
             {
                 return new List<object[]>
                     {
-                        new object[]{ new Random().Next(int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(int.MaxValue).ToString()},
-                        new object[]{ new Random().Next(int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(int.MaxValue).ToString()},
-                        new object[]{ new Random().Next(int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(int.MaxValue).ToString()},
-                        new object[]{ new Random().Next(int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(int.MaxValue).ToString()},
-                        new object[]{ new Random().Next(int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(int.MaxValue).ToString()},
+                        new object[]{ new Random().Next(0, int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(0, int.MaxValue).ToString(), Math.Round(new Random().NextDouble(), 4), true},
+                        new object[]{ new Random().Next(0, int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(0, int.MaxValue).ToString(), Math.Round(new Random().NextDouble(), 4), false},
+                        new object[]{ new Random().Next(0, int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(0, int.MaxValue).ToString(), Math.Round(new Random().NextDouble(), 4), true},
+                        new object[]{ new Random().Next(0, int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(0, int.MaxValue).ToString(), Math.Round(new Random().NextDouble(), 4), false},
+                        new object[]{ new Random().Next(0, int.MaxValue), "6.000", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(0, int.MaxValue).ToString(), Math.Round(new Random().NextDouble(), 4), true},
                     };
             }
         }
@@ -65,9 +63,9 @@ namespace TesteImposto.Test.Domain
         [DataTestMethod]
         [DynamicData(nameof(ItemNotaFiscalValidaList))]
         [TestCategory("Nota Fiscal")]
-        public void CreateValidNotaFiscal(int idNotaFiscal, string cfop, string tipoIcms, double? baseIcms, double? aliquotaIcms, double? valorIcms, string nomeProduto, string codigoProduto)
+        public void CreateValidNotaFiscal(int idNotaFiscal, string cfop, string tipoIcms, double? baseIcms, double? aliquotaIcms, double? valorIcms, string nomeProduto, string codigoProduto, double valorProduto, bool brinde)
         {
-            NotaFiscalItem notaFiscalItem = new NotaFiscalItem(idNotaFiscal, cfop, tipoIcms, baseIcms, aliquotaIcms, valorIcms, nomeProduto, codigoProduto);
+            NotaFiscalItem notaFiscalItem = new NotaFiscalItem(idNotaFiscal, cfop, tipoIcms, baseIcms, aliquotaIcms, valorIcms, nomeProduto, codigoProduto, valorProduto, brinde);
 
             Assert.IsTrue(notaFiscalItem.IsValid);
         }

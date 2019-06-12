@@ -17,7 +17,7 @@ namespace TesteImposto.Domain
             ValidateItem(nomeProduto, codigoProduto, valorItemPedido);
 
             if (IsValid)
-                CreateItem(nomeProduto, codigoProduto, valorItemPedido);
+                CreateItem(nomeProduto, codigoProduto, valorItemPedido, brinde);
         }
         /// <summary>
         /// Cria um item de pedido
