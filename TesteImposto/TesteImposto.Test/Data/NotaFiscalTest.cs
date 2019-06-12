@@ -13,7 +13,7 @@ namespace TesteImposto.Test.Data
         public void GerarNotaFiscalTest()
         {
             //arrange
-            Pedido pedido = new Pedido("SP", "RJ", "Cliente A");
+            Pedido pedido = new Pedido("SP", "RO", "Cliente A");
             pedido.AddItem(new PedidoItem("Produto A", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), true));
             pedido.AddItem(new PedidoItem("Produto B", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), false));
             pedido.AddItem(new PedidoItem("Produto C", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), false));

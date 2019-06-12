@@ -191,7 +191,10 @@ namespace TesteImposto.Domain
             {
                 cfop = "6.010";
             }
-
+            if (string.IsNullOrEmpty(cfop))
+            {
+                cfop = "6.000";
+            }
             return cfop;
         }
 
