@@ -6,6 +6,7 @@ using System.Transactions;
 using TesteImposto.Domain;
 using TesteImposto.Domain.Interfaces.Repositories;
 using TesteImposto.Shared;
+using TesteImposto.Shared.Xml;
 
 namespace TesteImposto.Data
 {
@@ -21,12 +22,15 @@ namespace TesteImposto.Data
             {
                 using (var scope = new TransactionScope())
                 {
-                    int idNotaFiscal = Gravar(notaFiscal);
+                    notaFiscal.Id = Gravar(notaFiscal);
                     NotaFiscalItemRepository notaFiscalItemRepository = new NotaFiscalItemRepository();
 
-                    notaFiscalItemRepository.GravarItemNotaFiscal(notaFiscal.ItensDaNotaFiscal, idNotaFiscal);
+                    notaFiscalItemRepository.GravarItemNotaFiscal(notaFiscal.ItensDaNotaFiscal, notaFiscal.Id);
 
-                    scope.Complete();
+                    bool xmlGerado = GerarXml(notaFiscal);
+
+                    if (xmlGerado)
+                        scope.Complete();
                 }
             }
             catch (Exception ex)
@@ -67,7 +71,7 @@ namespace TesteImposto.Data
                         if (result == 0)
                             throw new Exception("Erro ao gravar Nota Fiscal.");
 
-                        idNotaFiscal =(int)sqlCommand.Parameters["@pId"].Value;
+                        idNotaFiscal = (int)sqlCommand.Parameters["@pId"].Value;
                     }
                     catch (Exception ex)
                     {
@@ -76,6 +80,29 @@ namespace TesteImposto.Data
                 }
             }
             return idNotaFiscal;
+        }
+
+        /// <summary>
+        /// Gera o arquivo Xml com dados da nota fiscal num diretório parametrizado pela equipe pré-definido
+        /// </summary>
+        /// <param name="notaFiscal">Dados da nota fiscal para geração do arquivo Xml</param>
+        /// <returns></returns>
+        private bool GerarXml(NotaFiscal notaFiscal)
+        {
+            bool sucesso = false;
+            try
+            {
+                XmlShared.CreateXmlFile<NotaFiscal>(notaFiscal);
+
+                sucesso = true;
+            }
+            catch (Exception)
+            {
+                AddError("Erro ao gerar XML");
+                sucesso = false;
+            }
+
+            return sucesso;
         }
     }
 }

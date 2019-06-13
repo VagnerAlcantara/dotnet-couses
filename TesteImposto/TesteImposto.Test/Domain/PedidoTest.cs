@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using TesteImposto.Domain;
 
@@ -27,7 +28,14 @@ namespace TesteImposto.Test.Domain
         [TestCategory("Pedido")]
         public void CreateInvalidPedido(string estadoDestino, string estadoOrigem, string nomeCliente)
         {
-            Pedido pedido = new Pedido(estadoDestino, estadoOrigem, nomeCliente);
+            var itens = new List<PedidoItem>
+                    {
+                        new PedidoItem( "Produto A", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), true ),
+                        new PedidoItem( "Produto B", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), false ),
+                        new PedidoItem( "Produto C", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), true ),
+                        new PedidoItem( "Produto D", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), false ),
+                };
+            Pedido pedido = new Pedido(estadoDestino, estadoOrigem, nomeCliente, itens);
 
             Assert.IsFalse(pedido.IsValid);
         }
@@ -53,7 +61,14 @@ namespace TesteImposto.Test.Domain
         [TestCategory("Pedido")]
         public void CreateValidPedido(string estadoDestino, string estadoOrigem, string nomeCliente)
         {
-            Pedido pedido = new Pedido(estadoDestino, estadoOrigem, nomeCliente);
+            var itens = new List<PedidoItem>
+                    {
+                        new PedidoItem( "Produto A", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), true ),
+                        new PedidoItem( "Produto B", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), false ),
+                        new PedidoItem( "Produto C", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), true ),
+                        new PedidoItem( "Produto D", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), false ),
+                };
+            Pedido pedido = new Pedido(estadoDestino, estadoOrigem, nomeCliente, itens);
 
             Assert.IsTrue(pedido.IsValid);
         }

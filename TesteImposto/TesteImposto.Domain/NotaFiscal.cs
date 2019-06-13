@@ -20,24 +20,39 @@ namespace TesteImposto.Domain
             ItensDaNotaFiscal = new List<NotaFiscalItem>();
         }
 
-        public NotaFiscal(string nomeCliente, string estadoOrigem, string estadoDestino) : this()
+        public NotaFiscal(string nomeCliente, string estadoOrigem, string estadoDestino, IList<PedidoItem> pedidoItems) : this()
         {
-            ValidateNotaFiscal(nomeCliente, estadoDestino, estadoOrigem);
+            ValidateNotaFiscal(nomeCliente, estadoOrigem, estadoDestino);
 
             if (IsValid)
-                CreateNotaFiscal(nomeCliente, estadoDestino, estadoOrigem);
+                CreateNotaFiscal(nomeCliente, estadoOrigem, estadoDestino, pedidoItems);
         }
 
-        public NotaFiscal EmitirNotaFiscal(Pedido pedido)
+        /// <summary>
+        /// Valida os dados para nota fiscal
+        /// </summary>
+        /// <param name="nomeCliente">Nome do cliente</param>
+        /// <param name="estadoDestino">Estado de destino</param>
+        /// <param name="estadoOrigem">Esta de origem</param>
+        private void ValidateNotaFiscal(string nomeCliente, string estadoOrigem, string estadoDestino)
         {
-            if (pedido.IsValid && IsValid)
-                AddItem(pedido);
+            if (string.IsNullOrEmpty(nomeCliente))
+                AddError("Nome do cliente é obrigatório");
 
-            return this;
+            if (string.IsNullOrEmpty(estadoDestino))
+                AddError("Estado de destino é obrigatório");
 
+            if (string.IsNullOrEmpty(estadoOrigem))
+                AddError("Estado de origem é obrigatório");
         }
 
-        private void CreateNotaFiscal(string nomeCliente, string estadoDestino, string estadoOrigem)
+        /// <summary>
+        /// Cria nota fiscal
+        /// </summary>
+        /// <param name="nomeCliente">Nome do cliente</param>
+        /// <param name="estadoDestino">Estado de destino</param>
+        /// <param name="estadoOrigem">Esta de origem</param>
+        private void CreateNotaFiscal(string nomeCliente, string estadoOrigem, string estadoDestino, IList<PedidoItem> pedidoItems)
         {
             Id = 0;
             NumeroNotaFiscal = new Random().Next(0, int.MaxValue);
@@ -45,20 +60,31 @@ namespace TesteImposto.Domain
             NomeCliente = nomeCliente;
             EstadoDestino = estadoOrigem;
             EstadoOrigem = estadoDestino;
-        }
+            ItensDaNotaFiscal = AddItem(pedidoItems);
 
-        private void AddItem(Pedido pedido)
+        }
+        
+        /// <summary>
+        /// Adiciona itens a nota fiscal
+        /// </summary>
+        /// <param name="pedidoItems">Itens do pedido</param>
+        /// <returns>Retorna os itens da nota fiscal</returns>
+        private List<NotaFiscalItem> AddItem(IList<PedidoItem> pedidoItems)
         {
+            List<NotaFiscalItem> itensDaNotaFiscal = new List<NotaFiscalItem>();
+
             string cfop = GetCfop();
             string tipoIcms = GetTipoIcms();
             double? aliquotaIcms = GetAliquotaIcms();
 
-            foreach (PedidoItem itemPedido in pedido.ItensDoPedido)
+            foreach (PedidoItem itemPedido in pedidoItems)
             {
                 double descontoSudeste = 10;
 
                 if (Estado.IsSudeste(EstadoOrigem))
                     itemPedido.AplicarDesconto(descontoSudeste);
+                else
+                    descontoSudeste = 0;
 
                 double? baseIcms = GetBaseIcms(cfop, itemPedido.ValorItemPedido);
 
@@ -86,25 +112,17 @@ namespace TesteImposto.Domain
                      );
 
                 if (notaFiscalItem.IsValid)
-                    ItensDaNotaFiscal.Add(notaFiscalItem);
+                    itensDaNotaFiscal.Add(notaFiscalItem);
                 else
                     AddError(notaFiscalItem.Errors);
-
             }
+            return itensDaNotaFiscal;
         }
 
-        private void ValidateNotaFiscal(string nomeCliente, string estadoDestino, string estadoOrigem)
-        {
-            if (string.IsNullOrEmpty(nomeCliente))
-                AddError("Nome do cliente é obrigatório");
-
-            if (string.IsNullOrEmpty(estadoDestino))
-                AddError("Estado de destino é obrigatório");
-
-            if (string.IsNullOrEmpty(estadoOrigem))
-                AddError("Estado de origem é obrigatório");
-        }
-
+        /// <summary>
+        /// Falta refatorar, criar objetos especificos para aplicação de regra sem if
+        /// </summary>
+        /// <returns></returns>
         private string GetCfop()
         {
             string cfop = string.Empty;
@@ -204,51 +222,47 @@ namespace TesteImposto.Domain
             return cfop;
         }
 
+        /// <summary>
+        /// Falta refatorar
+        /// </summary>
+        /// <returns></returns>
         private string GetTipoIcms()
         {
-            string tipoIcms = string.Empty;
+            string tipoIcms = "10";
 
             if (EstadoDestino == EstadoOrigem)
-            {
                 tipoIcms = "60";
-            }
-            else
-            {
-                tipoIcms = "10";
-            }
-
+            
             return tipoIcms;
         }
 
-        private double? GetAliquotaIcms()
+        /// <summary>
+        /// Falta refatorar
+        /// </summary>
+        /// <returns></returns>
+        private double GetAliquotaIcms()
         {
-            double? aliquotaIcms = null;
+            double aliquotaIcms = 0.17;
 
             if (EstadoDestino == EstadoOrigem)
-            {
                 aliquotaIcms = 0.18;
-            }
-            else
-            {
-                aliquotaIcms = 0.17;
-            }
-
+            
             return aliquotaIcms;
         }
 
-        private double? GetBaseIcms(string cfop, double valorItemPedido)
+        /// <summary>
+        /// Falta refatorar
+        /// </summary>
+        /// <param name="cfop">CFOP</param>
+        /// <param name="valorItemPedido">Valor do item</param>
+        /// <returns></returns>
+        private double GetBaseIcms(string cfop, double valorItemPedido)
         {
-            double? baseIcms = null;
+            double baseIcms = valorItemPedido;
 
             if (cfop == "6.009")
-            {
                 baseIcms = valorItemPedido * 0.90; //redução de base
-            }
-            else
-            {
-                baseIcms = valorItemPedido;
-            }
-
+            
             return baseIcms;
         }
     }

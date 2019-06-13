@@ -1,9 +1,7 @@
-﻿using System;
-using TesteImposto.Data;
+﻿using TesteImposto.Data;
 using TesteImposto.Domain;
 using TesteImposto.Domain.Interfaces.Services;
 using TesteImposto.Shared;
-using TesteImposto.Shared.Xml;
 
 namespace TesteImposto.Service
 {
@@ -21,18 +19,13 @@ namespace TesteImposto.Service
         /// <param name="pedido">Dados do pedido para geração da nota fiscal</param>
         public void GerarNotaFiscal(Pedido pedido)
         {
-            if (pedido.ItensDoPedido == null || pedido.ItensDoPedido.Count == 0)
-                pedido.AddError("É obrigatório o preenchimento de ao menos um item para o pedido");
-
             if (!pedido.IsValid)
             {
                 AddError(pedido.Errors);
                 return;
             }
 
-            NotaFiscal notaFiscal = new NotaFiscal(pedido.NomeCliente, pedido.EstadoDestino, pedido.EstadoOrigem);
-
-            notaFiscal = notaFiscal.EmitirNotaFiscal(pedido);
+            NotaFiscal notaFiscal = new NotaFiscal(pedido.NomeCliente, pedido.EstadoDestino, pedido.EstadoOrigem, pedido.ItensDoPedido);
 
             if (!notaFiscal.IsValid)
             {
@@ -40,33 +33,10 @@ namespace TesteImposto.Service
                 return;
             }
 
-            if (GerarXml(notaFiscal))
-                _notaFiscalRepository.GravarNotaFiscal(notaFiscal);
+            _notaFiscalRepository.GravarNotaFiscal(notaFiscal);
 
             if (!_notaFiscalRepository.IsValid)
                 AddError(_notaFiscalRepository.Errors);
-        }
-
-        /// <summary>
-        /// Gera o arquivo Xml com dados da nota fiscal num diretório parametrizado pela equipe pré-definido
-        /// </summary>
-        /// <param name="notaFiscal">Dados da nota fiscal para geração do arquivo Xml</param>
-        /// <returns></returns>
-        private bool GerarXml(NotaFiscal notaFiscal)
-        {
-            bool sucesso = false;
-            try
-            {
-                XmlShared.CreateXmlFile<NotaFiscal>(notaFiscal);
-
-                sucesso = true;
-            }
-            catch (Exception)
-            {
-                AddError("Erro ao gerar XML");
-            }
-
-            return sucesso;
         }
     }
 }

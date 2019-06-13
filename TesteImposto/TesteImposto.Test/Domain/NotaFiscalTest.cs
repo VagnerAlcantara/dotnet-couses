@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using TesteImposto.Domain;
 
@@ -7,6 +8,14 @@ namespace TesteImposto.Test.Domain
     [TestClass]
     public class NotaFiscalTest
     {
+        List<PedidoItem> _itens = new List<PedidoItem>
+        {
+            new PedidoItem( "Produto A", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), true ),
+            new PedidoItem( "Produto B", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), false ),
+            new PedidoItem( "Produto C", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), true ),
+            new PedidoItem( "Produto D", Guid.NewGuid().ToString().Substring(0, 10), Math.Round(new Random().NextDouble(), 4), false ),
+        };
+
         #region| Teste para emissão de uma nota fiscal inválida
         private static IEnumerable<object[]> NotaFiscalInvalidosList
         {
@@ -27,7 +36,7 @@ namespace TesteImposto.Test.Domain
         [TestCategory("Nota Fiscal")]
         public void CreateInvalidNotaFiscal(string nomeCliente, string estadoOrigem, string estadoDestino)
         {
-            NotaFiscal notaFiscal = new NotaFiscal(nomeCliente, estadoOrigem, estadoDestino);
+            NotaFiscal notaFiscal = new NotaFiscal(nomeCliente, estadoOrigem, estadoDestino, _itens);
 
             Assert.IsFalse(notaFiscal.IsValid);
         }
@@ -52,7 +61,7 @@ namespace TesteImposto.Test.Domain
         [TestCategory("Nota Fiscal")]
         public void CreateValidNotaFiscal(string nomeCliente, string estadoOrigem, string estadoDestino)
         {
-            NotaFiscal notaFiscal = new NotaFiscal(nomeCliente, estadoOrigem, estadoDestino);
+            NotaFiscal notaFiscal = new NotaFiscal(nomeCliente, estadoOrigem, estadoDestino, _itens);
 
             Assert.IsTrue(notaFiscal.IsValid);
         }

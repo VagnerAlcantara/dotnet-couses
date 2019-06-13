@@ -55,7 +55,7 @@
             this.label2.Location = new System.Drawing.Point(3, 38);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(76, 13);
-            this.label2.TabIndex = 1;
+            this.label2.TabIndex = 2;
             this.label2.Text = "Estado Origem";
             // 
             // label3
@@ -64,7 +64,7 @@
             this.label3.Location = new System.Drawing.Point(505, 38);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(79, 13);
-            this.label3.TabIndex = 2;
+            this.label3.TabIndex = 4;
             this.label3.Text = "Estado Destino";
             // 
             // textBoxNomeCliente
@@ -72,7 +72,7 @@
             this.textBoxNomeCliente.Location = new System.Drawing.Point(95, 9);
             this.textBoxNomeCliente.Name = "textBoxNomeCliente";
             this.textBoxNomeCliente.Size = new System.Drawing.Size(939, 20);
-            this.textBoxNomeCliente.TabIndex = 3;
+            this.textBoxNomeCliente.TabIndex = 1;
             // 
             // label4
             // 
@@ -90,14 +90,14 @@
             this.dataGridViewPedidos.Location = new System.Drawing.Point(6, 77);
             this.dataGridViewPedidos.Name = "dataGridViewPedidos";
             this.dataGridViewPedidos.Size = new System.Drawing.Size(1028, 325);
-            this.dataGridViewPedidos.TabIndex = 7;
+            this.dataGridViewPedidos.TabIndex = 6;
             // 
             // buttonGerarNotaFiscal
             // 
             this.buttonGerarNotaFiscal.Location = new System.Drawing.Point(907, 408);
             this.buttonGerarNotaFiscal.Name = "buttonGerarNotaFiscal";
             this.buttonGerarNotaFiscal.Size = new System.Drawing.Size(127, 23);
-            this.buttonGerarNotaFiscal.TabIndex = 8;
+            this.buttonGerarNotaFiscal.TabIndex = 7;
             this.buttonGerarNotaFiscal.Text = "Gerar Nota Fiscal";
             this.buttonGerarNotaFiscal.UseVisualStyleBackColor = true;
             this.buttonGerarNotaFiscal.Click += new System.EventHandler(this.ButtonGerarNotaFiscal_Click);
@@ -109,7 +109,7 @@
             this.cbEstadoOrigem.Name = "cbEstadoOrigem";
             this.cbEstadoOrigem.Size = new System.Drawing.Size(404, 21);
             this.cbEstadoOrigem.Sorted = true;
-            this.cbEstadoOrigem.TabIndex = 9;
+            this.cbEstadoOrigem.TabIndex = 3;
             // 
             // cbEstadoDestino
             // 
@@ -118,7 +118,7 @@
             this.cbEstadoDestino.Name = "cbEstadoDestino";
             this.cbEstadoDestino.Size = new System.Drawing.Size(444, 21);
             this.cbEstadoDestino.Sorted = true;
-            this.cbEstadoDestino.TabIndex = 10;
+            this.cbEstadoDestino.TabIndex = 5;
             // 
             // FormImposto
             // 

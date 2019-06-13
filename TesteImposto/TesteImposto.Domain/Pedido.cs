@@ -15,34 +15,21 @@ namespace TesteImposto.Domain
 
         private Pedido() => ItensDoPedido = new List<PedidoItem>();
 
-        public Pedido(string estadoOrigem, string estadoDestino, string nomeCliente) : this()
+        public Pedido(string estadoOrigem, string estadoDestino, string nomeCliente, IList<PedidoItem> itensDoPedido) : this()
         {
-            ValidatePedido(estadoDestino, estadoOrigem, nomeCliente);
+            ValidatePedido(estadoDestino, estadoOrigem, nomeCliente, itensDoPedido);
 
             if (IsValid)
-                CreatePedido(estadoDestino, estadoOrigem, nomeCliente);
+                CreatePedido(estadoDestino, estadoOrigem, nomeCliente, itensDoPedido);
         }
-        
-        /// <summary>
-        /// Cria um pedido
-        /// </summary>
-        /// <param name="estadoDestino">Estado de destino do pedido</param>
-        /// <param name="estadoOrigem">Estado de origem do pedido</param>
-        /// <param name="nomeCliente">Nome do cliente que esta realizando o pedido</param>
-        private void CreatePedido(string estadoDestino, string estadoOrigem, string nomeCliente)
-        {
-            EstadoDestino = estadoDestino;
-            EstadoOrigem = estadoOrigem;
-            NomeCliente = nomeCliente;
-        }
-        
         /// <summary>
         /// Valida um pedido
         /// </summary>
         /// <param name="estadoDestino">Estado de destino do pedido</param>
         /// <param name="estadoOrigem">Estado de origem do pedido</param>
         /// <param name="nomeCliente">Nome do cliente que esta realizando o pedido</param>
-        private void ValidatePedido(string estadoDestino, string estadoOrigem, string nomeCliente)
+        /// <param name="itensDoPedido">Itens relacionado ao pedido</param>
+        private void ValidatePedido(string estadoDestino, string estadoOrigem, string nomeCliente, IList<PedidoItem> itensDoPedido)
         {
             if (string.IsNullOrEmpty(estadoDestino))
                 AddError("Estado destino é obrigatório");
@@ -52,8 +39,26 @@ namespace TesteImposto.Domain
 
             if (string.IsNullOrEmpty(nomeCliente))
                 AddError("Nome cliente é obrigatório");
+
+            if (itensDoPedido == null || itensDoPedido.Count == 0)
+                AddError("É obrigatório o preenchimento de ao menos um item para o pedido");
         }
-        
+
+        /// <summary>
+        /// Cria um pedido
+        /// </summary>
+        /// <param name="estadoDestino">Estado de destino do pedido</param>
+        /// <param name="estadoOrigem">Estado de origem do pedido</param>
+        /// <param name="nomeCliente">Nome do cliente que esta realizando o pedido</param>
+        /// <param name="itensDoPedido">Itens relacionado ao pedido</param>
+        private void CreatePedido(string estadoDestino, string estadoOrigem, string nomeCliente, IList<PedidoItem> itensDoPedido)
+        {
+            EstadoDestino = estadoDestino;
+            EstadoOrigem = estadoOrigem;
+            NomeCliente = nomeCliente;
+            ItensDoPedido = itensDoPedido;
+        }
+
         /// <summary>
         /// Adiciona itens válidos a um pedido
         /// </summary>
@@ -61,11 +66,9 @@ namespace TesteImposto.Domain
         public void AddItem(PedidoItem item)
         {
             if (!item.IsValid)
-            {
                 AddError(item.Errors);
-                return;
-            }
-            ItensDoPedido.Add(item);
+            else
+                ItensDoPedido.Add(item);
         }
     }
 }

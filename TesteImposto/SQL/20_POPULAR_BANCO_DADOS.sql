@@ -1,3 +1,6 @@
+use Teste
+go
+
 DECLARE @vIdNota int = 0
 DECLARE @vNumeroNotaFiscal int = 1
 DECLARE @vSerie int = 2

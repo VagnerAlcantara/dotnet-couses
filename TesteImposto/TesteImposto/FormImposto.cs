@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
@@ -9,14 +10,8 @@ namespace TesteImposto
 {
     public partial class FormImposto : Form
     {
-        private Pedido _pedido;
         private NotaFiscalService _notaFiscalService;
-
-        private void FormImposto_Load(object sender, EventArgs e)
-        {
-            CarregarComboEstadoOrigem();
-            CarregarComboEstadoDestino();
-        }
+        private readonly string msgCaption = "Teste Imposto";
 
         public FormImposto()
         {
@@ -26,39 +21,10 @@ namespace TesteImposto
             ResizeColumns();
         }
 
-        private void ButtonGerarNotaFiscal_Click(object sender, EventArgs e)
+        private void FormImposto_Load(object sender, EventArgs e)
         {
-            try
-            {
-                CriarPedido();
-                CriarItemsPedido();
-
-                if (!_pedido.IsValid)
-                    return;
-
-                _notaFiscalService = new NotaFiscalService();
-
-                _notaFiscalService.GerarNotaFiscal(_pedido);
-
-                if (_notaFiscalService.IsValid)
-                {
-                    MessageBox.Show("Operação efetuada com sucesso");
-                    RestaurarTela();
-                    return;
-                }
-                else
-                {
-                    string msgInfo = string.Concat("Atenção!\nPor favor, corrigir os seguintes itens: \n", string.Join("\n", _notaFiscalService.Errors.Select(i => i).ToArray()));
-                    MessageBox.Show(msgInfo, "Atenção");
-                    return;
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Erro ao gerar nota fiscal");
-                return;
-            }
-
+            CarregarComboEstadoOrigem();
+            CarregarComboEstadoDestino();
         }
 
         private void ResizeColumns()
@@ -82,38 +48,63 @@ namespace TesteImposto
             return table;
         }
 
-        /// <summary>
-        /// Recupera e cria itens do pedido informado pelo usuário
-        /// </summary>
-        private void CriarItemsPedido()
+        private void ButtonGerarNotaFiscal_Click(object sender, EventArgs e)
         {
-            DataTable table = (DataTable)dataGridViewPedidos.DataSource;
-
-            foreach (DataRow row in table.Rows)
+            try
             {
-                string nomeProduto = row["Nome do produto"] == null ? string.Empty : row["Nome do produto"].ToString();
-                string codProduto = row["Codigo do produto"] == null ? string.Empty : row["Codigo do produto"].ToString();
-                double valorProduto = row["Valor"] == null ? 0 : Convert.ToDouble(row["Valor"].ToString());
-                bool brinde = false;
-
-                if (row["Brinde"] == null)
+                Pedido pedido = null;
+                try
                 {
-                    bool.TryParse(row["Brinde"].ToString(), out brinde);
+                    pedido = CriarPedido();
                 }
-                    
-                     
+                catch (Exception)
+                {
+                    MessageBox.Show("Erro inesperado ao criar pedido, por favor, confirme os dados e tente novamente", msgCaption);
+                }
 
-                PedidoItem pedidoItem = new PedidoItem(nomeProduto, codProduto, valorProduto, brinde);
+                if (!pedido.IsValid)
+                {
+                    string msgInfo = string.Concat("Atenção!\nPor favor, corrigir os seguintes itens: \n", string.Join("\n", pedido.Errors.Select(i => i).ToArray()));
+                    MessageBox.Show(msgInfo, msgCaption);
+                    return;
+                }
 
-                if (pedidoItem.IsValid)
-                    _pedido.AddItem(pedidoItem);
+                try
+                {
+                    _notaFiscalService = new NotaFiscalService();
+
+                    _notaFiscalService.GerarNotaFiscal(pedido);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Erro inesperado ao criar gerar nota fiscal, por favor, confirme os dados e tente novamente", msgCaption);
+                }
+                
+
+                if (_notaFiscalService.IsValid)
+                {
+                    MessageBox.Show("Operação efetuada com sucesso!", msgCaption);
+                    RestaurarTela();
+                    return;
+                }
+                else
+                {
+                    string msgInfo = string.Concat("Atenção!\nPor favor, corrigir os seguintes itens: \n", string.Join("\n", _notaFiscalService.Errors.Select(i => i).ToArray()));
+                    MessageBox.Show(msgInfo, msgCaption);
+                    return;
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Erro inesperado, por favor, tente novamente mais tarde", msgCaption);
+                return;
             }
         }
 
         /// <summary>
         /// Recupera e cria pedido informado pelo usuário
         /// </summary>
-        private void CriarPedido()
+        private Pedido CriarPedido()
         {
             string ufOrigem = string.Empty;
             string ufDestino = string.Empty;
@@ -124,14 +115,34 @@ namespace TesteImposto
             if (cbEstadoDestino.SelectedValue != null)
                 ufDestino = cbEstadoDestino.SelectedValue.ToString();
 
-            _pedido = new Pedido(ufOrigem, ufDestino, textBoxNomeCliente.Text);
+            IList<PedidoItem> pedidoItems = CriarItemsPedido();
 
-            if (!_pedido.IsValid)
+            return new Pedido(ufOrigem, ufDestino, textBoxNomeCliente.Text, pedidoItems);
+        }
+
+        /// <summary>
+        /// Recupera e cria itens do pedido informado pelo usuário
+        /// </summary>
+        private IList<PedidoItem> CriarItemsPedido()
+        {
+            List<PedidoItem> pedidoItem = new List<PedidoItem>();
+
+            DataTable table = (DataTable)dataGridViewPedidos.DataSource;
+
+            foreach (DataRow row in table.Rows)
             {
-                string msgInfo = string.Concat("Atenção!\nPor favor, corrigir os seguintes itens: \n", string.Join("\n", _pedido.Errors.Select(i => i).ToArray()));
-                MessageBox.Show(msgInfo);
-                return;
+                string nomeProduto = row["Nome do produto"] == null ? string.Empty : row["Nome do produto"].ToString();
+                string codProduto = row["Codigo do produto"] == null ? string.Empty : row["Codigo do produto"].ToString();
+                double valorProduto = row["Valor"] == null ? 0 : Convert.ToDouble(row["Valor"].ToString());
+                bool brinde = false;
+
+                if (row["Brinde"] == null)
+                    bool.TryParse(row["Brinde"].ToString(), out brinde);
+
+                pedidoItem.Add(new PedidoItem(nomeProduto, codProduto, valorProduto, brinde));
             }
+
+            return pedidoItem;
         }
 
         /// <summary>
@@ -145,6 +156,7 @@ namespace TesteImposto
             dataGridViewPedidos.DataSource = GetTablePedidos();
             textBoxNomeCliente.Text = string.Empty;
         }
+        
         /// <summary>
         /// Carrega o combo de estado origem
         /// </summary>
