@@ -26,7 +26,11 @@ namespace TesteStream.Console
             if (string.IsNullOrEmpty(_input))
                 return new char();
 
-            return _input[_lastIndexRead];
+            char nextChar = _input[_lastIndexRead];
+
+            _lastIndexRead++;
+
+            return nextChar;
         }
         /// <summary>
         /// Retornar se a stream ainda contem caracteres para processar.        /// </summary>
