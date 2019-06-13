@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace TesteStream.Console
 {
@@ -9,14 +10,57 @@ namespace TesteStream.Console
 
         public Stream(string input) => _input = input;
 
-        public char FirstChar()
+
+        public char? FirstChar()
         {
+            bool consonantFound = false;
+            char? vogal = null;
+
             while (HasNext())
             {
+                //obtendo o character
                 char next = GetNext();
+
+                //encontrado primeira consoante
+                if (IsConsonant(next) && !consonantFound)
+                    consonantFound = true;
+
+                //enquanto não encontrar uma consoante, continua percorrendo a string
+                if (!consonantFound)
+                    continue;
+
+                //verifica se é vogal
+                if (IsVogal(next))
+                {
+                    //verifica se vogal já foi armazenada, caso já tenha sido, limpamos pois se trata de repetição de vogal
+                    if (vogal.HasValue && vogal.Value.ToString().ToLower() == next.ToString().ToLower())
+                        vogal = null;
+                    else
+                        vogal = next;
+                }
             }
-            throw new NotImplementedException();
+            return vogal;
         }
+
+        /// <summary>
+        /// Verifica se o char é uma vogal
+        /// </summary>
+        /// <param name="input">char analisado</param>
+        /// <returns>retorna se é vogal</returns>
+        public static bool IsVogal(char input)
+        {
+            return Regex.Match(input.ToString(), "^([aeiouAEIOU]+)$").Success;
+        }
+        /// <summary>
+        /// Verifica se o char é uma consoante
+        /// </summary>
+        /// <param name="input">char analisado</param>
+        /// <returns>retorna se é consoante</returns>
+        public static bool IsConsonant(char input)
+        {
+            return Regex.Match(input.ToString(), @"^([^aeiouAEIOU0-9\W]+)$").Success;
+        }
+
         /// <summary>
         ///  Retornar o próximo caracter a ser processado na stream
         /// </summary>
