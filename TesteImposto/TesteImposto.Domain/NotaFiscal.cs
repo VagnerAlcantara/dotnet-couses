@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TesteImposto.Domain.CFOP;
 using TesteImposto.Shared;
 
 namespace TesteImposto.Domain
@@ -63,7 +64,7 @@ namespace TesteImposto.Domain
             ItensDaNotaFiscal = AddItem(pedidoItems);
 
         }
-        
+
         /// <summary>
         /// Adiciona itens a nota fiscal
         /// </summary>
@@ -120,106 +121,23 @@ namespace TesteImposto.Domain
         }
 
         /// <summary>
-        /// Falta refatorar, criar objetos especificos para aplicação de regra sem if
+        /// Falta melhorar o refactoring
         /// </summary>
         /// <returns></returns>
         private string GetCfop()
         {
-            string cfop = string.Empty;
+            object classeOrigem = CFOP.CFOP.GetInstance(EstadoOrigem);
 
-            if ((EstadoOrigem == "SP") && (EstadoDestino == "RJ"))
-            {
-                cfop = "6.000";
-            }
-            else if ((EstadoOrigem == "SP") && (EstadoDestino == "PE"))
-            {
-                cfop = "6.001";
-            }
-            else if ((EstadoOrigem == "SP") && (EstadoDestino == "MG"))
-            {
-                cfop = "6.002";
-            }
-            else if ((EstadoOrigem == "SP") && (EstadoDestino == "PB"))
-            {
-                cfop = "6.003";
-            }
-            else if ((EstadoOrigem == "SP") && (EstadoDestino == "PR"))
-            {
-                cfop = "6.004";
-            }
-            else if ((EstadoOrigem == "SP") && (EstadoDestino == "PI"))
-            {
-                cfop = "6.005";
-            }
-            else if ((EstadoOrigem == "SP") && (EstadoDestino == "RO"))
-            {
-                cfop = "6.006";
-            }
-            else if ((EstadoOrigem == "SP") && (EstadoDestino == "SE"))
-            {
-                cfop = "6.007";
-            }
-            else if ((EstadoOrigem == "SP") && (EstadoDestino == "TO"))
-            {
-                cfop = "6.008";
-            }
-            else if ((EstadoOrigem == "SP") && (EstadoDestino == "SE"))
-            {
-                cfop = "6.009";
-            }
-            else if ((EstadoOrigem == "SP") && (EstadoDestino == "PA"))
-            {
-                cfop = "6.010";
-            }
-            else if ((EstadoOrigem == "MG") && (EstadoDestino == "RJ"))
-            {
-                cfop = "6.000";
-            }
-            else if ((EstadoOrigem == "MG") && (EstadoDestino == "PE"))
-            {
-                cfop = "6.001";
-            }
-            else if ((EstadoOrigem == "MG") && (EstadoDestino == "MG"))
-            {
-                cfop = "6.002";
-            }
-            else if ((EstadoOrigem == "MG") && (EstadoDestino == "PB"))
-            {
-                cfop = "6.003";
-            }
-            else if ((EstadoOrigem == "MG") && (EstadoDestino == "PR"))
-            {
-                cfop = "6.004";
-            }
-            else if ((EstadoOrigem == "MG") && (EstadoDestino == "PI"))
-            {
-                cfop = "6.005";
-            }
-            else if ((EstadoOrigem == "MG") && (EstadoDestino == "RO"))
-            {
-                cfop = "6.006";
-            }
-            else if ((EstadoOrigem == "MG") && (EstadoDestino == "SE"))
-            {
-                cfop = "6.007";
-            }
-            else if ((EstadoOrigem == "MG") && (EstadoDestino == "TO"))
-            {
-                cfop = "6.008";
-            }
-            else if ((EstadoOrigem == "MG") && (EstadoDestino == "SE"))
-            {
-                cfop = "6.009";
-            }
-            else if ((EstadoOrigem == "MG") && (EstadoDestino == "PA"))
-            {
-                cfop = "6.010";
-            }
-            if (string.IsNullOrEmpty(cfop))
-            {
-                cfop = "6.000";
-            }
-            return cfop;
+            if (classeOrigem == null)
+                return "";
+
+            var result =
+                classeOrigem
+                .GetType()
+                .GetMethod("GetValue")
+                .Invoke(this, new object[] { EstadoDestino });
+
+            return (string)result;
         }
 
         /// <summary>
@@ -232,7 +150,7 @@ namespace TesteImposto.Domain
 
             if (EstadoDestino == EstadoOrigem)
                 tipoIcms = "60";
-            
+
             return tipoIcms;
         }
 
@@ -246,7 +164,7 @@ namespace TesteImposto.Domain
 
             if (EstadoDestino == EstadoOrigem)
                 aliquotaIcms = 0.18;
-            
+
             return aliquotaIcms;
         }
 
@@ -262,7 +180,7 @@ namespace TesteImposto.Domain
 
             if (cfop == "6.009")
                 baseIcms = valorItemPedido * 0.90; //redução de base
-            
+
             return baseIcms;
         }
     }

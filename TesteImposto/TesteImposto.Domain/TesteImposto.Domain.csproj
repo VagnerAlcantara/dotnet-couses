@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CFOP\CFOP.cs" />
+    <Compile Include="CFOP\MGOrigem.cs" />
+    <Compile Include="CFOP\SPOrigem.cs" />
     <Compile Include="Estado.cs" />
     <Compile Include="Interfaces\Repositories\INotaFiscalItemRepository.cs" />
     <Compile Include="Interfaces\Repositories\INotaFiscalRepository.cs" />

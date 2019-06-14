@@ -61,8 +61,8 @@ namespace TesteImposto.Domain
         /// <param name="codigoProduto">Código do produto</param>
         private void ValidateNotaFiscalItem(int idNotaFiscal, string cfop, string tipoIcms, double? baseIcms, double? aliquotaIcms, double? valorIcms, string nomeProduto, string codigoProduto)
         {
-            if (string.IsNullOrEmpty(cfop))
-                AddError("CFOP inválido");
+            //if (string.IsNullOrEmpty(cfop))
+            //    AddError("CFOP inválido");
 
             if (string.IsNullOrEmpty(tipoIcms))
                 AddError("Tipo do ICMS inválido");

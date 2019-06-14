@@ -15,8 +15,6 @@ namespace TesteImposto.Test.Domain
             {
                 return new List<object[]>
                     {
-                        //sem cfop
-                        new object[]{ new Random().Next(0, int.MaxValue), "", "60", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(0, int.MaxValue).ToString(), Math.Round(new Random().NextDouble(), 4), false},
                         //sem tipoIcms
                         new object[]{ new Random().Next(0, int.MaxValue), "6.000", "", Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), Math.Round(new Random().NextDouble(), 4), "Produto A", new Random().Next(0, int.MaxValue).ToString(), Math.Round(new Random().NextDouble(), 4), true},
                         //sem baseIcms

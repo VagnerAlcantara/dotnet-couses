@@ -49,7 +49,7 @@ namespace TesteImposto.Test.Domain
             {
                 return new List<object[]>
                     {
-                        new object[]{"Cliente A", "SP", "RJ"},
+                        new object[]{"Cliente A", "MO", "RO"},
                         new object[]{"Cliente B","MG", "RJ"},
                         new object[]{"Cliente C", "SP", "MG"},
                     };
