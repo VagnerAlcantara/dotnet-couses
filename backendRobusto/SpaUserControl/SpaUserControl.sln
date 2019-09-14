@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2006
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaUserControl.Domain", "SpaUserControl.Domain\SpaUserControl.Domain.csproj", "{2FCAACA4-0E71-4CD9-8388-E1F91D8F1C20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaUserControl.Common", "SpaUserControl.Common\SpaUserControl.Common.csproj", "{E62E1B94-B250-4576-BB80-9EC702CA6538}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaUserControl.Infra", "SpaUserControl.Infra\SpaUserControl.Infra.csproj", "{1378B23E-613A-4F42-AF43-2D70992CC3FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaUserControl.Startup", "SpaUserControl.Startup\SpaUserControl.Startup.csproj", "{36AE6355-F97B-42D6-8040-ED68C4B052D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaUserControl.Business", "SpaUserControl.Business\SpaUserControl.Business.csproj", "{01B4E155-75F4-4294-B3D2-4B87C883E928}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaUserControl.Api", "SpaUserControl.Api\SpaUserControl.Api.csproj", "{EA151148-5744-473F-901B-8FE4A654C471}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2FCAACA4-0E71-4CD9-8388-E1F91D8F1C20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FCAACA4-0E71-4CD9-8388-E1F91D8F1C20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FCAACA4-0E71-4CD9-8388-E1F91D8F1C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FCAACA4-0E71-4CD9-8388-E1F91D8F1C20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E62E1B94-B250-4576-BB80-9EC702CA6538}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E62E1B94-B250-4576-BB80-9EC702CA6538}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E62E1B94-B250-4576-BB80-9EC702CA6538}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E62E1B94-B250-4576-BB80-9EC702CA6538}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1378B23E-613A-4F42-AF43-2D70992CC3FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1378B23E-613A-4F42-AF43-2D70992CC3FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1378B23E-613A-4F42-AF43-2D70992CC3FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1378B23E-613A-4F42-AF43-2D70992CC3FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36AE6355-F97B-42D6-8040-ED68C4B052D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36AE6355-F97B-42D6-8040-ED68C4B052D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36AE6355-F97B-42D6-8040-ED68C4B052D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36AE6355-F97B-42D6-8040-ED68C4B052D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01B4E155-75F4-4294-B3D2-4B87C883E928}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01B4E155-75F4-4294-B3D2-4B87C883E928}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01B4E155-75F4-4294-B3D2-4B87C883E928}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01B4E155-75F4-4294-B3D2-4B87C883E928}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA151148-5744-473F-901B-8FE4A654C471}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA151148-5744-473F-901B-8FE4A654C471}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA151148-5744-473F-901B-8FE4A654C471}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA151148-5744-473F-901B-8FE4A654C471}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
+		SolutionGuid = {F6400830-E89C-4D1D-A080-510A37649C60}
+	EndGlobalSection
+EndGlobal
